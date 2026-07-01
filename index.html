@@ -2,445 +2,753 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="monetag" content="2a58d0665d22845938daef47a2f9e0cb">
-    <meta name="6a97888e-site-verification" content="5bf1247baa15bb9bead60527ff0ab687">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dating Earn Pro</title>
     
-    <meta http-equiv="Delegate-CH" content="Sec-CH-UA https://s.magsrv.com; Sec-CH-UA-Mobile https://s.magsrv.com; Sec-CH-UA-Arch https://s.magsrv.com; Sec-CH-UA-Model https://s.magsrv.com; Sec-CH-UA-Platform https://s.magsrv.com; Sec-CH-UA-Platform-Version https://s.magsrv.com; Sec-CH-UA-Bitness https://s.magsrv.com; Sec-CH-UA-Full-Version-List https://s.magsrv.com; Sec-CH-UA-Full-Version https://s.magsrv.com;">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Fluid Player CSS -->
+    <link rel="stylesheet" href="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.css" type="text/css"/>
     
-    <title>Dating Earn Pro - User Panel</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.css">
-
     <style>
-        :root { 
-            --primary: #6c5ce7; --accent: #00f2fe; --danger: #ff4d6d; 
-            --dark-bg: #0a0a12; --success: #00b894; --warning: #fdcb6e; 
-            --card-bg: #1e1e2f; --text-color: #dfe6e9;
+        /* === GLOBAL STYLES === */
+        :root {
+            --bg-dark: #121212;
+            --bg-card: #1e1e1e;
+            --primary: #00f2fe;
+            --accent: #a29bfe;
+            --danger: #ff4757;
+            --success: #2ecc71;
+            --text-main: #ffffff;
+            --text-muted: #aaaaaa;
         }
-        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--dark-bg); color: var(--text-color); padding-bottom: 80px; overflow-x: hidden; }
-        
-        #verification-overlay { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: linear-gradient(rgba(10, 10, 18, 0.85), rgba(10, 10, 18, 0.95)), 
-                        url('https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=1000&auto=format&fit=crop') no-repeat center center; 
-            background-size: cover; z-index: 7000; display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box;
-        }
-        .pop-box { background: rgba(30, 30, 47, 0.95); padding: 30px 20px; border-radius: 15px; max-width: 400px; width: 100%; text-align: center; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.6); backdrop-filter: blur(5px); }
-        
-        .btn-google {
-            background: #ffffff; color: #444; border: 1px solid #ddd; border-radius: 8px;
-            font-weight: bold; cursor: pointer; width: 100%; font-size: 14px; margin: 10px 0;
-            display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px;
-            transition: all 0.3s ease;
-        }
-        .btn-google:hover { background: #f7f7f7; box-shadow: 0 4px 12px rgba(255,255,255,0.1); }
-        .btn-google img { width: 22px; height: 22px; object-fit: contain; }
 
-        .auto-credentials-box {
-            background: rgba(10, 10, 18, 0.6); border: 1px dashed rgba(108, 92, 231, 0.4);
-            border-radius: 10px; padding: 12px; margin: 15px 0; text-align: left; font-size: 13px;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
-        .credential-row { display: flex; justify-content: space-between; margin-bottom: 6px; }
-        .credential-row:last-child { margin-bottom: 0; }
-        .credential-row span { color: #888; }
-        .credential-row strong { color: var(--accent); }
 
-        .header { background: linear-gradient(135deg, var(--primary), #a29bfe); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.3); flex-wrap: wrap; gap: 10px; }
-        .header b { font-size: 16px; color: white; }
-        
-        .header-right-zone { display: flex; align-items: center; gap: 12px; }
-        .logout-top-btn {
-            background: var(--danger); color: white; border: none; padding: 6px 12px;
-            border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer;
-            display: flex; align-items: center; gap: 5px; box-shadow: 0 2px 6px rgba(255, 77, 109, 0.3);
-            transition: 0.2s;
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            padding-bottom: 60px; /* Space for navbar */
+            overflow-x: hidden;
         }
-        .logout-top-btn:hover { opacity: 0.9; transform: scale(1.02); }
 
-        .lang-select {
-            background: rgba(255, 255, 255, 0.2); color: white; border: 1px solid rgba(255,255,255,0.4);
-            padding: 5px 10px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; outline: none;
+        /* === HEADER === */
+        header {
+            background: linear-gradient(135deg, #1e1e1e, #2d2d2d);
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-        .lang-select option { background: var(--card-bg); color: var(--text-color); }
 
-        .container { width: 100%; max-width: 1200px; margin: auto; box-sizing: border-box; }
-        .content-padding { padding: 0 15px; }
-        
-        .modern-notice-bar { 
-            background: linear-gradient(90deg, #1e1e2f, #151525, #1e1e2f); 
-            border-radius: 30px; padding: 10px 20px; margin-top: 15px; margin-bottom: 15px;
-            border: 1px solid rgba(108, 92, 231, 0.3); box-shadow: 0 0 15px rgba(108, 92, 231, 0.15);
-            display: flex; align-items: center; overflow: hidden;
+        header h1 {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        .notice-badge {
-            background: linear-gradient(135deg, var(--primary), var(--danger));
-            color: #fff; padding: 5px 12px; font-size: 12px; font-weight: bold;
-            border-radius: 20px; white-space: nowrap; margin-right: 15px;
-            box-shadow: 0 2px 8px rgba(255, 77, 109, 0.4); display: flex; align-items: center; gap: 5px;
-        }
-        .notice-ticker { flex: 1; overflow: hidden; white-space: nowrap; }
-        .notice-ticker-text { display: inline-block; padding-left: 100%; animation: marquee 25s linear infinite; color: var(--text-color); font-size: 13.5px; font-weight: 500; }
-        .notice-ticker:hover .notice-ticker-text { animation-play-state: paused; }
-        @keyframes marquee { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
 
-        .user-stats-panel { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 10px 0 15px 0; }
-        @media(max-width: 600px) { .user-stats-panel { grid-template-columns: repeat(2, 1fr); } }
-        
+        #lang-switcher {
+            background: #333;
+            color: #fff;
+            border: 1px solid #555;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            outline: none;
+        }
+
+        /* === NOTICE BAR === */
+        .notice-bar {
+            background: rgba(0, 242, 254, 0.1);
+            border-left: 4px solid var(--primary);
+            padding: 10px;
+            margin: 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badge-notice {
+            background: var(--primary);
+            color: #000;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+            font-size: 11px;
+        }
+
+        /* === AD WRAPPERS === */
+        .ad-zone {
+            width: 100%;
+            min-height: 90px;
+            background: #1a1a1a;
+            margin: 15px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border: 1px dashed #333;
+        }
+
+        /* === USER STATS PANEL === */
+        .user-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            padding: 0 10px;
+        }
+
         .stat-box {
-            background: linear-gradient(145deg, #1e1e2f, #151525); border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 12px; padding: 10px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: all 0.3s ease;
+            background: var(--bg-card);
+            border: 1px solid #2d2d2d;
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
         }
-        .stat-box i { font-size: 16px; margin-bottom: 5px; display: block; }
-        .stat-box span { font-size: 11px; color: #888; display: block; }
-        .stat-box b { font-size: 14px; color: #fff; display: block; margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        
-        .stat-box.pulse-blue { border-color: rgba(0, 242, 254, 0.4); box-shadow: 0 0 10px rgba(0, 242, 254, 0.15); }
-        .stat-box.pulse-green { border-color: rgba(0, 184, 148, 0.4); box-shadow: 0 0 10px rgba(0, 184, 148, 0.15); }
-        .stat-box.pulse-warn { border-color: rgba(253, 203, 110, 0.4); box-shadow: 0 0 10px rgba(253, 203, 110, 0.15); }
-        .stat-box.pulse-purple { border-color: rgba(108, 92, 231, 0.4); box-shadow: 0 0 10px rgba(108, 92, 231, 0.15); cursor: pointer; }
-        .stat-box.pulse-purple:hover { transform: scale(1.03); }
 
-        .feedback-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 15px 0; }
-        .rating-card, .comment-trigger-card, .telegram-trigger-card {
-            background: #1e1e2f; border-radius: 15px; padding: 12px;
-            border: 1px solid rgba(255,255,255,0.05); text-align: center; position: relative;
+        .stat-box h4 {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 5px;
         }
-        .comment-trigger-card, .telegram-trigger-card { cursor: pointer; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .comment-trigger-card:hover, .telegram-trigger-card:hover { border-color: var(--primary); }
-        .stars-container { display: flex; justify-content: center; gap: 4px; margin: 5px 0; }
-        .stars-container i { font-size: 14px; color: #444; cursor: pointer; transition: 0.2s; }
-        .stars-container i.active { color: var(--warning); text-shadow: 0 0 8px rgba(253, 203, 110, 0.6); }
-        
-        .comment-badge { position: absolute; top: -5px; right: -5px; background: var(--danger); color: white; font-size: 11px; font-weight: bold; width: 22px; height: 22px; border-radius: 50%; display: none; align-items: center; justify-content: center; box-shadow: 0 0 8px var(--danger); }
 
-        .comment-modal, .wallet-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10,10,18,0.9);
-            z-index: 8000; display: none; justify-content: center; align-items: flex-end;
+        .stat-box .value {
+            font-size: 15px;
+            font-weight: bold;
         }
-        .comment-popup-box, .wallet-popup-box {
-            background: #151525; border-top-left-radius: 25px; border-top-right-radius: 25px;
-            width: 100%; max-width: 500px; height: 85vh; display: flex; flex-direction: column;
-            border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 -5px 25px rgba(0,0,0,0.5);
+
+        .stat-box.clickable {
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            background: linear-gradient(145deg, #1e1e1e, #252525);
+            cursor: pointer;
         }
-        .comment-popup-header, .wallet-popup-header {
-            padding: 15px 20px; border-bottom: 1px solid #222; display: flex;
-            justify-content: space-between; align-items: center; background: #1e1e2f;
-            border-top-left-radius: 24px; border-top-right-radius: 24px;
+
+        .stat-box.clickable .value {
+            color: var(--primary);
         }
-        
-        .wallet-content-area { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
-        .wallet-card-view { background: linear-gradient(135deg, #6c5ce7, #4834d4); border-radius: 15px; padding: 20px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-        .ltc-box-info { background: #1e1e2f; border: 1px solid #333; border-radius: 12px; padding: 15px; margin-top: 10px; text-align: left; }
-        .ltc-box-info h5 { margin: 0 0 8px 0; color: #fff; font-size: 14px; }
-        .ltc-box-info p { margin: 4px 0; font-size: 12px; color: #aaa; }
-        .wallet-input { background: #11111e; border: 1px solid #333; padding: 12px; color: #fff; border-radius: 8px; width: 100%; box-sizing: border-box; font-size: 14px; margin-top: 5px; }
 
-        .comment-list-area { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 12px; }
-        .comment-item { background: #1e1e2f; border-radius: 12px; padding: 12px; border: 1px solid rgba(255,255,255,0.03); }
-        .comment-meta { display: flex; justify-content: space-between; font-size: 11px; color: #6c5ce7; font-weight: bold; margin-bottom: 5px; }
-        .comment-text { font-size: 13.5px; color: #ddd; word-break: break-word; }
-        .reply-section { margin-top: 10px; padding-left: 15px; border-left: 2px dashed #333; display: flex; flex-direction: column; gap: 8px; }
-        .reply-item { background: #11111e; padding: 8px 10px; border-radius: 8px; font-size: 12.5px; }
-        .btn-reply-trigger { background: transparent; border: none; color: var(--accent); font-size: 11px; cursor: pointer; padding: 4px 0 0 0; font-weight: bold; }
-        
-        .comment-input-area { padding: 12px 15px; background: #1e1e2f; border-top: 1px solid #222; display: flex; gap: 8px; align-items: center; box-sizing: border-box; }
-        .comment-input-area input { flex: 1; background: #11111e; border: 1px solid #333; padding: 10px 14px; color: #fff; border-radius: 20px; font-size: 13.5px; outline: none; }
-        .comment-input-area button { background: var(--primary); color: white; border: none; width: 38px; height: 38px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        /* === ACTION BUTTONS === */
+        .action-container {
+            padding: 15px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
 
-        .top-cover-banner { width: 100% !important; margin: 15px 0 !important; background: transparent; display: flex; align-items: center; justify-content: center; padding: 0 !important; min-height: 90px !important; overflow: hidden; border-radius: 12px; position: relative; }
-        .ad-banner-wrapper { width: 100% !important; margin: 15px 0 !important; background: transparent; display: flex; align-items: center; justify-content: center; min-height: 100px; padding: 0 !important; overflow: hidden; position: relative; }
+        .rating-summary-zone {
+            background: #1a1a1a;
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+        }
 
-        .category-container { display: flex; gap: 10px; overflow-x: auto; padding: 5px 15px 15px 15px; margin-bottom: 10px; scrollbar-width: none; box-sizing: border-box; }
-        .category-container::-webkit-scrollbar { display: none; }
-        .cat-btn { background: #2a2a40; color: #fff; padding: 8px 16px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: 0.3s; }
-        .cat-btn.active, .cat-btn:hover { background: var(--primary); box-shadow: 0 4px 12px rgba(108, 92, 231, 0.4); }
+        .stars-row i {
+            color: #444;
+            font-size: 18px;
+            cursor: pointer;
+            margin-left: 2px;
+        }
 
-        .video-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 10px; padding: 0 15px; }
-        @media(min-width: 768px) { .video-grid { grid-template-columns: repeat(3, 1fr); } }
-        @media(min-width: 1024px) { .video-grid { grid-template-columns: repeat(4, 1fr); } }
-        
-        .video-card { background: var(--card-bg); border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); position: relative; cursor: pointer; transition: 0.3s; }
-        .video-card:hover { transform: translateY(-3px); }
-        .video-thumb { width: 100%; height: 120px; object-fit: cover; background: #111; }
-        @media(min-width: 768px) { .video-thumb { height: 160px; } }
-        
-        .badge-new { position: absolute; top: 8px; left: 8px; background: linear-gradient(135deg, #ff4d6d, #ff007f); color: #fff; font-size: 10px; font-weight: bold; padding: 3px 8px; border-radius: 6px; box-shadow: 0 0 10px rgba(255, 77, 109, 0.6); animation: blink 1.5s infinite alternate; z-index: 10; }
-        @keyframes blink { 0% { opacity: 0.7; } 100% { opacity: 1; } }
-        .upload-time-label { font-size: 10px; color: #777; margin-top: 3px; display: block; }
-        .video-info { padding: 10px; }
-        .video-title { font-size: 13px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .video-price { font-size: 12px; color: var(--success); margin-top: 4px; }
+        .stars-row i.active {
+            color: #f1c40f;
+        }
 
-        .pagination-container { display: flex; justify-content: center; align-items: center; gap: 15px; margin: 25px 0 15px 0; padding: 0 15px; box-sizing: border-box; }
-        .page-btn { background: linear-gradient(135deg, #1e1e2f, #2a2a40); border: 1px solid rgba(255,255,255,0.08); color: white; font-weight: bold; font-size: 13px; padding: 10px 18px; border-radius: 25px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        .page-btn:hover:not(:disabled) { background: var(--primary); transform: translateY(-2px); border-color: rgba(255,255,255,0.15); }
-        .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-        .page-indicator { font-size: 13.5px; color: #aaa; font-weight: 600; background: #11111e; padding: 8px 14px; border-radius: 15px; border: 1px solid #222; }
-        
-        #video-player-container { display: none; background: #000; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; flex-direction: column; }
-        .player-header { padding: 12px 20px; display: flex; align-items: center; gap: 20px; background: #111; border-bottom: 1px solid #222; }
-        
-        .player-back-btn { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); color: #fff; font-size: 26px; cursor: pointer; padding: 8px 18px; border-radius: 30px; display: flex; align-items: center; justify-content: center; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.4); }
-        .player-back-btn:hover { color: var(--accent); background: var(--primary); transform: scale(1.05); }
-        
-        .video-frame-box { flex: 1; display: flex; align-items: center; justify-content: center; background: #000; position: relative; }
-        .fluid_video_wrapper { width: 100% !important; height: 100% !important; max-height: 380px !important; }
-        
-        #player-top-ad-wrapper { min-height: 100px !important; background: rgba(255,255,255,0.02); padding: 5px 0 !important; }
-        #player-bottom-ad-wrapper { min-height: 180px !important; background: rgba(255,255,255,0.02); padding: 10px 0 !important; pointer-events: auto !important; }
+        .btn-action {
+            width: 100%;
+            padding: 12px;
+            background: #252525;
+            border: 1px solid #383838;
+            color: #fff;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            position: relative;
+        }
 
-        .btn { padding: 12px 15px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; width: 100%; font-size: 14px; margin: 5px 0; }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-danger { background: var(--danger); color: white; }
-        
-        .legal-safety-footer { background: #0d0d1a; padding: 25px 15px; text-align: center; font-size: 11.5px; color: #666; border-top: 1px solid #1a1a2e; margin-top: 15px; line-height: 1.6; }
-        .legal-safety-footer h4 { margin: 0 0 8px 0; color: #999; font-size: 13px; }
+        .btn-action #lbl-comment-badge {
+            position: absolute;
+            right: 15px;
+            background: var(--danger);
+            color: white;
+            font-size: 11px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
 
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #0f0f1a; display: flex; border-top: 1px solid #222; z-index: 500; }
-        .nav-item { flex: 1; text-align: center; padding: 15px 0; color: #888; font-size: 12px; cursor: pointer; }
-        .nav-item.active { color: var(--primary); }
-        .nav-item i { font-size: 18px; display: block; margin-bottom: 2px; }
-        
-        .bottom-home-ad-wrapper { width: 100% !important; min-height: 100px; background: transparent; display: flex; align-items: center; justify-content: center; margin: 15px 0; overflow: hidden; }
-        
-        .custom-alert-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:99999; display:none; align-items:center; justify-content:center; padding:20px; }
-        .custom-alert-box { background:#1e1e2f; border:2px solid var(--primary); border-radius:15px; padding:25px; max-width:400px; width:100%; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.5); }
+        /* === CATEGORY LIST === */
+        #category-list-wrapper {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 10px;
+            white-space: nowrap;
+        }
+
+        #category-list-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .cat-btn {
+            background: #222;
+            border: 1px solid #333;
+            color: #ccc;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .cat-btn.active {
+            background: var(--primary);
+            color: #000;
+            font-weight: bold;
+            border-color: var(--primary);
+        }
+
+        /* === VIDEO GRID & CARDS === */
+        .section-title {
+            padding: 10px;
+            font-size: 15px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            padding: 10px;
+        }
+
+        @media (min-width: 768px) {
+            .video-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        .video-card {
+            background: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #252525;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .video-thumb {
+            width: 100%;
+            aspect-ratio: 4/5;
+            object-fit: cover;
+            background: #222;
+            display: block;
+        }
+
+        .badge-new {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: var(--danger);
+            color: #fff;
+            font-size: 9px;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 3px;
+            z-index: 2;
+        }
+
+        .video-info {
+            padding: 8px;
+        }
+
+        .video-title {
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 1.3;
+            height: 32px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            margin-bottom: 4px;
+        }
+
+        .upload-time-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .video-price {
+            font-size: 10px;
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        /* === PAGINATION === */
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 10px;
+        }
+
+        .pagination button {
+            background: #222;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 5px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        #lbl-page-number {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* === MODALS & OVERLAYS === */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 15px;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border: 1px solid #333;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 450px;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* === VERIFICATION OVERLAY === */
+        #verification-overlay {
+            background: #0d0d0d;
+        }
+
+        .auth-box {
+            text-align: center;
+            max-width: 350px;
+            width: 100%;
+            background: #161616;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #252525;
+        }
+
+        .auth-box h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .auth-box p {
+            font-size: 13px;
+            color: #ccc;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .btn-auth {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .btn-primary { background: var(--primary); color: #000; }
+        .btn-google { background: #fff; color: #000; display: flex; justify-content: center; align-items: center; gap: 8px; }
+        .btn-skip { background: #252525; color: #fff; border: 1px solid #444; }
+
+        /* === VIDEO PLAYER CONTAINER === */
+        #video-player-container {
+            padding: 0;
+            background: #000;
+        }
+
+        .player-header {
+            width: 100%;
+            padding: 10px 15px;
+            background: #111;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .player-close-btn {
+            background: var(--danger);
+            color: #fff;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* === COMMENT SYSTEM === */
+        .comment-item {
+            border-bottom: 1px solid #282828;
+            padding: 10px 0;
+        }
+
+        .comment-meta {
+            font-size: 12px;
+            color: var(--accent);
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .comment-text {
+            font-size: 13px;
+            line-height: 1.4;
+            color: #eee;
+        }
+
+        .btn-reply-trigger {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 11px;
+            margin-top: 5px;
+            cursor: pointer;
+        }
+
+        .reply-section {
+            margin-left: 20px;
+            border-left: 2px solid #333;
+            padding-left: 10px;
+            margin-top: 5px;
+        }
+
+        .reply-item {
+            padding: 5px 0;
+            border-top: 1px dashed #222;
+        }
+
+        /* === FIXED BOTTOM NAVIGATION === */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 55px;
+            background: #1a1a1a;
+            border-top: 1px solid #2d2d2d;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 900;
+        }
+
+        .nav-item {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 11px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .nav-item i {
+            font-size: 18px;
+        }
+
+        .nav-item:active, .nav-item.active {
+            color: var(--primary);
+        }
     </style>
 </head>
 <body>
 
-    <div id="custom-alert-zone" class="custom-alert-overlay">
-        <div class="custom-alert-box">
-            <i class="fa fa-info-circle" style="font-size:45px; color:var(--warning); margin-bottom:15px;"></i>
-            <h3 id="lbl-alert-title" style="margin:0 0 10px 0; color:#fff;">অ্যাকাউন্ট নোটিশ!</h3>
-            <p id="custom-alert-msg" style="font-size:14px; color:#ccc; line-height:1.5; margin-bottom:20px;"></p>
-            <button id="lbl-alert-btn" class="btn btn-primary" onclick="closeCustomAlert()">ঠিক আছে</button>
-        </div>
-    </div>
-
-    <div id="verification-overlay">
-        <div class="pop-box" id="terms-box">
-            <i class="fa fa-shield-halved" style="font-size: 50px; color: var(--primary); margin-bottom: 15px;"></i>
-            <h2 style="margin: 0 0 10px 0; font-size: 20px;">শর্তাবলী ও নিয়মাবলী</h2>
-            <p style="font-size: 13px; color: #bbb; line-height: 1.5; text-align: justify; margin-bottom: 20px;">
-                এই সাইটে প্রবেশ করার পূর্বে আপনাকে আমাদের গোপনীয়তা নীতি এবং ব্যবহারকারী নির্দেশিকা মেনে নিতে হবে। এখানে প্রদর্শিত কন্টেন্ট শুধুমাত্র প্রাপ্তবয়স্কদের বিনোদনের জন্য তৈরি। আপনি কি এই শর্তে সম্মত আছেন?
-            </p>
-            <button class="btn btn-primary" onclick="acceptTerms()">হ্যাঁ, আমি সম্মত আছি</button>
+    <!-- ==================== ১. ভেরিফিকেশন ও লগইন ওভারলে ==================== -->
+    <div id="verification-overlay" class="modal" style="display: flex;">
+        <!-- টার্মস বক্স -->
+        <div id="terms-box" class="auth-box">
+            <h3>⚖️ Terms & Disclaimer</h3>
+            <p>এই সাইটে প্রবেশ করার আগে আপনাকে আমাদের সকল নিয়ম ও শর্তাবলী মেনে নিতে হবে। এটি একটি ১৮+ বিনোদনমূলক প্ল্যাটফর্ম।</p>
+            <button class="btn-auth btn-primary" onclick="acceptTerms()">মেনে নিলাম (Accept)</button>
         </div>
 
-        <div class="pop-box" id="age-box" style="display: none;">
-            <i class="fa fa-exclamation-triangle" style="font-size: 50px; color: var(--danger); margin-bottom: 15px;"></i>
-            <h2 style="margin: 0 0 10px 0; font-size: 22px; color: var(--danger);">১৮+ সতর্কতা!</h2>
-            <p style="font-size: 14px; color: #ccc; margin-bottom: 25px;">
-                এই ওয়েবসাইটে সংবেদনশীল এবং প্রাপ্তবয়স্কদের কন্টেন্ট রয়েছে। এগিয়ে যাওয়ার জন্য আপনার বয়স অবশ্যই ১৮ বছর বা তার বেশি হতে হবে।
-            </p>
-            <button class="btn btn-primary" onclick="generateAutoAccountAndProceed()">হ্যাঁ, আমার বয়স ১৮+</button>
-            <button class="btn btn-danger" onclick="accessDenied()">না, আমি ছোট (Exit)</button>
+        <!-- এজ বক্স -->
+        <div id="age-box" class="auth-box" style="display:none;">
+            <h3>🔞 Age Verification</h3>
+            <p>আপনার বয়স কি ১৮ বছরের ঊর্ধ্বে? ভুল তথ্য দিয়ে প্রবেশ করলে কর্তৃপক্ষ দায়ী থাকবে না।</p>
+            <button class="btn-auth btn-primary" onclick="generateAutoAccountAndProceed()">হ্যাঁ, আমার বয়স ১৮+</button>
+            <button class="btn-auth btn-skip" onclick="accessDenied()">না, আমি ছোট</button>
         </div>
 
-        <div class="pop-box" id="google-box" style="display: none;">
-            <h2 style="margin: 0 0 10px 0; font-size: 20px;">অ্যাকাউন্ট ভেরিফিকেশন</h2>
-            <p style="font-size: 13px; color: #bbb; margin-bottom: 10px;">
-                আপনার ডিভাইসের জন্য একটি স্বয়ংক্রিয় আইডি তৈরি করা হয়েছে। প্রিমিয়াম লাইভ রুমে অ্যাক্সেস পেতে এটি গুগলে ট্রান্সফার করুন।
-            </p>
-
-            <div class="auto-credentials-box">
-                <div class="credential-row">
-                    <span>Auto ID:</span>
-                    <strong id="overlay-auto-uid">Loading...</strong>
-                </div>
-                <div class="credential-row">
-                    <span>Password:</span>
-                    <strong id="overlay-auto-pass">Loading...</strong>
-                </div>
-            </div>
-
-            <button class="btn-google" onclick="handleGoogleSignIn()">
-                <img src="https://i.ibb.co/6JfTQBJX/google-app-logo-icon-free-png.png" alt="Google Logo">
-                Transfer & Sign up with Google
+        <!-- গুগল সাইন-ইন বক্স -->
+        <div id="google-box" class="auth-box" style="display:none;">
+            <h3>🔐 Account Security</h3>
+            <p>আপনার অ্যাকাউন্ট তৈরি হয়েছে!<br>ID: <span id="overlay-auto-uid" style="color:var(--primary); font-weight:bold;"></span><br>Pass: <span id="overlay-auto-pass" style="color:var(--accent);"></span></p>
+            <button class="btn-auth btn-google" onclick="handleGoogleSignIn()">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="16" alt="Google"> Sign In with Google
             </button>
-            
-            <button class="btn btn-primary" onclick="skipGoogleAndEnter()" style="background: var(--success); font-size: 13px; margin-top: 5px;">Direct Dashboard Entry</button>
+            <button class="btn-auth btn-skip" onclick="skipGoogleAndEnter()">গুগল ছাড়া প্রবেশ করুন (নো আর্ন)</button>
         </div>
     </div>
 
+
+    <!-- ==================== ২. মেইন অ্যাপ্লিকেশন ইন্টারফেস ==================== -->
     <div id="main-app" style="display: none;">
-        <div class="header">
-            <div><i class="fa fa-heart-circle-bolt" style="color: var(--accent);"></i> <b id="lbl-app-name">Dating Earn Pro</b></div>
-            <div class="header-right-zone">
-                <select class="lang-select" id="lang-switcher" onchange="changeLanguage(this.value)">
-                    <option value="bn">বাংলা</option>
-                    <option value="en">English</option>
-                </select>
-                <span id="lbl-premium-tag" style="color: var(--warning); font-size: 13px;"><i class="fa fa-circle" style="color: var(--success);"></i> Premium Live</span>
-                <button class="logout-top-btn" onclick="handleLogout()"><i class="fa fa-sign-out-alt"></i> Logout</button>
+        
+        <!-- হেডার এরিয়া -->
+        <header>
+            <h1 id="lbl-app-name">Dating Earn Pro</h1>
+            <select id="lang-switcher" onchange="changeLanguage(this.value)">
+                <option value="bn">🎯 বাংলা</option>
+                <option value="en">🇬🇧 English</option>
+            </select>
+        </header>
+
+        <!-- লাইভ নোটিশ -->
+        <div class="notice-bar">
+            <span id="lbl-notice-badge" class="badge-notice"><i class="fa fa-bullhorn"></i> নোটিশ</span>
+            <span id="app-notice-text">লোডিং নোটিশ...</span>
+        </div>
+
+        <!-- টপ ব্যানার বিজ্ঞাপন -->
+        <div id="top-cover-ad-wrapper" class="ad-zone"></div>
+
+        <!-- ইউজার ড্যাশবোর্ড / স্ট্যাটস -->
+        <div class="user-stats-grid">
+            <div class="stat-box">
+                <h4 id="lbl-stat-uid">মাই আইডি / ইমেইল</h4>
+                <div id="lbl-panel-uid" style="word-break: break-all; font-size:12px;">-</div>
+            </div>
+            <div class="stat-box clickable" onclick="openWalletPopup()">
+                <h4 id="lbl-stat-wallet">মাই ওয়ালেট</h4>
+                <div id="lbl-panel-earnings" class="value">$0.0000 USD</div>
+            </div>
+            <div class="stat-box">
+                <h4 id="lbl-stat-watched">রুম ওয়াচ</h4>
+                <div id="lbl-panel-watched" class="value">0 টি</div>
+            </div>
+            <div class="stat-box">
+                <h4 id="lbl-stat-clicks">অ্যাড ক্লিক</h4>
+                <div id="lbl-panel-clicks" class="value">0 বার</div>
             </div>
         </div>
 
-        <div class="container">
-            <div class="top-cover-banner" id="top-cover-ad-wrapper"></div>
-
-            <div class="content-padding">
-                <div class="modern-notice-bar">
-                    <div class="notice-badge" id="lbl-notice-badge"><i class="fa fa-bullhorn"></i> নোটিশ</div>
-                    <div class="notice-ticker">
-                        <span id="app-notice-text" class="notice-ticker-text">লোডিং নোটিশ...</span>
-                    </div>
+        <!-- একশন বাটন এবং রিভিউ গ্রুপ -->
+        <div class="action-container">
+            <div class="rating-summary-zone">
+                <span id="lbl-card-review"><i class="fa fa-star"></i> লাইভ রিভিউ</span>
+                <div id="rating-star-row" class="stars-row">
+                    <i class="fa fa-star" data-value="1" onclick="submitUserRating(1)"></i>
+                    <i class="fa fa-star" data-value="2" onclick="submitUserRating(2)"></i>
+                    <i class="fa fa-star" data-value="3" onclick="submitUserRating(3)"></i>
+                    <i class="fa fa-star" data-value="4" onclick="submitUserRating(4)"></i>
+                    <i class="fa fa-star" data-value="5" onclick="submitUserRating(5)"></i>
                 </div>
-
-                <div class="user-stats-panel">
-                    <div class="stat-box pulse-blue">
-                        <i class="fa fa-fingerprint" style="color: var(--accent);"></i>
-                        <span id="lbl-stat-uid">মাই আইডি / ইমেইল</span>
-                        <b id="lbl-panel-uid" style="font-size:11px;">...</b>
-                    </div>
-                    <div class="stat-box pulse-purple" onclick="openWalletPopup()">
-                        <i class="fa fa-wallet" style="color: #a29bfe;"></i>
-                        <span id="lbl-stat-wallet">মাই ওয়ালেট</span>
-                        <b id="lbl-panel-earnings">$0.00 USD</b>
-                    </div>
-                    <div class="stat-box pulse-green">
-                        <i class="fa fa-eye" style="color: var(--success);"></i>
-                        <span id="lbl-stat-watched">রুম ওয়াচ</span>
-                        <b id="lbl-panel-watched">0 টি</b>
-                    </div>
-                    <div class="stat-box pulse-warn">
-                        <i class="fa fa-mouse-pointer" style="color: var(--warning);"></i>
-                        <span id="lbl-stat-clicks">অ্যাড ক্লিক</span>
-                        <b id="lbl-panel-clicks">0 বার</b>
-                    </div>
-                </div>
-
-                <div class="feedback-row">
-                    <div class="rating-card">
-                        <h4 id="lbl-card-review" style="margin: 0; font-size: 11px; color: #aaa;"><i class="fa fa-star"></i> লাইভ রিভিউ</h4>
-                        <div class="stars-container" id="rating-star-row">
-                            <i class="fa fa-star" data-value="1" onclick="submitUserRating(1)"></i>
-                            <i class="fa fa-star" data-value="2" onclick="submitUserRating(2)"></i>
-                            <i class="fa fa-star" data-value="3" onclick="submitUserRating(3)"></i>
-                            <i class="fa fa-star" data-value="4" onclick="submitUserRating(4)"></i>
-                            <i class="fa fa-star" data-value="5" onclick="submitUserRating(5)"></i>
-                        </div>
-                        <span id="lbl-rating-summary" style="font-size: 10px; color: #777; display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">로드 হচ্ছে...</span>
-                    </div>
-
-                    <div class="comment-trigger-card" onclick="openCommentPopup()">
-                        <div class="comment-badge" id="lbl-comment-badge">0</div>
-                        <i class="fa fa-comments" style="font-size: 26px; color: var(--accent); margin-bottom: 5px;"></i>
-                        <h4 id="lbl-card-comment" style="margin: 0; font-size: 12px; color: #fff;">লাইভ কমেন্ট</h4>
-                        <span style="font-size: 10px; color: #777;" id="lbl-total-comments-info">0 টি কমেন্ট</span>
-                    </div>
-                    
-                    <div class="telegram-trigger-card" onclick="window.open('https://t.me/bestchoicev26bot', '_blank')">
-                        <i class="fab fa-telegram" style="font-size: 26px; color: #0088cc; margin-bottom: 5px;"></i>
-                        <h4 id="lbl-card-telegram" style="margin: 0; font-size: 12px; color: #fff;">টেলিগ্রাম</h4>
-                        <span id="lbl-card-telegram-sub" style="font-size: 10px; color: #777;">গ্রুপে জয়েন</span>
-                    </div>
-                </div>
+                <span id="lbl-rating-summary">⭐ 5.0</span>
             </div>
 
-            <div class="category-container" id="category-list-wrapper">
-                <button class="cat-btn active" id="cat-all" onclick="filterCategory('all')">সব রুম</button>
-            </div>
+            <button class="btn-action" onclick="openCommentPopup()">
+                <i class="fa fa-comments"></i> <span id="lbl-card-comment">লাইভ কমেন্ট</span>
+                <span id="lbl-comment-badge">0</span>
+            </button>
+        </div>
 
-            <div id="nav-home-section">
-                <div class="ad-banner-wrapper" id="middle-ad-wrapper"></div>
+        <!-- মিডল ব্যানার বিজ্ঞাপন -->
+        <div id="middle-ad-wrapper" class="ad-zone"></div>
 
-                <div class="content-padding">
-                    <h3 id="lbl-section-title" style="margin: 10px 0 10px 0; font-size: 16px; color: #fff;"><i class="fa fa-video"></i> প্রিমিয়াম লাইভ ভিডিও রুম</h3>
-                </div>
-                
-                <div class="video-grid" id="video-list-container"></div>
-
-                <div class="pagination-container">
-                    <button class="page-btn" id="btn-prev-page" onclick="changeVideoPage(-1)" disabled>
-                        <i class="fa fa-angle-left"></i> <span id="lbl-btn-prev">পূর্ববর্তী</span>
-                    </button>
-                    <div class="page-indicator" id="lbl-page-number">পেজ: ১</div>
-                    <button class="page-btn" id="btn-next-page" onclick="changeVideoPage(1)" disabled>
-                        <span id="lbl-btn-next">পরবর্তী</span> <i class="fa fa-angle-right"></i>
-                    </button>
-                </div>
-                
-                <div class="bottom-home-ad-wrapper" id="home-bottom-ad-wrapper"></div>
+        <!-- ভিডিও লিস্ট এবং ক্যাটাগরি ফিল্টার -->
+        <div id="nav-home-section">
+            <div id="category-list-wrapper">
+                <!-- জাভাস্ক্রিপ্ট দিয়ে ক্যাটাগরি বাটন আসবে -->
             </div>
             
-            <div class="legal-safety-footer" id="legal-footer-area"></div>
+            <h3 id="lbl-section-title" class="section-title"><i class='fa fa-video'></i> প্রিমিয়াম লাইভ ভিডিও রুম</h3>
+            
+            <div id="video-list-container" class="video-grid">
+                <!-- জাভাস্ক্রিপ্ট দিয়ে ভিডিও কার্ড লোড হবে -->
+            </div>
+            
+            <!-- পেজিনেশন কন্ট্রোল -->
+            <div class="pagination">
+                <button id="btn-prev-page" onclick="changeVideoPage(-1)"><i class="fa fa-arrow-left"></i> <span id="lbl-btn-prev">পূর্ববর্তী</span></button>
+                <span id="lbl-page-number">पेज: 1 / 1</span>
+                <button id="btn-next-page" onclick="changeVideoPage(1)"><span id="lbl-btn-next">পরবর্তী</span> <i class="fa fa-arrow-right"></i></button>
+            </div>
         </div>
 
-        <div class="bottom-nav">
-            <div class="nav-item active" id="lbl-nav-home"><i class="fa fa-home"></i>হোমপেজ</div>
-            <div class="nav-item" onclick="window.location.reload()" id="lbl-nav-refresh"><i class="fa fa-refresh"></i>রিফ্রেশ অ্যাপ</div>
-        </div>
+        <!-- বটম ব্যানার বিজ্ঞাপন -->
+        <div id="home-bottom-ad-wrapper" class="ad-zone"></div>
+        
+        <!-- লিগাল ফুটার -->
+        <footer id="legal-footer-area" style="padding: 20px 15px; background: #0b0b0b; font-size: 11px; color: #555; line-height: 1.6; border-top: 1px solid #1a1a1a;"></footer>
     </div>
 
-    <div id="global-wallet-modal" class="wallet-modal" onclick="closeWalletPopupOutside(event)">
-        <div class="wallet-popup-box">
-            <div class="wallet-popup-header">
-                <b style="font-size:15px; color:#fff;"><i class="fa fa-wallet text-accent"></i> <span id="lbl-wallet-header">মাই আর্নিং ও উইথড্রাল হিস্টোরি</span></b>
-                <i class="fa fa-times" style="font-size:18px; color:#aaa; cursor:pointer;" onclick="closeWalletPopup()"></i>
-            </div>
-            <div class="wallet-content-area">
-                <div class="wallet-card-view">
-                    <span id="lbl-wallet-bal-title" style="font-size:14px; color:#eee; display:block; margin-bottom:5px;">Total Balance</span>
-                    <h2 id="modal-wallet-balance" style="margin:0; font-size:28px; color:#fff;">$0.00 USD</h2>
-                </div>
-                
-                <div class="ltc-box-info">
-                    <h5 id="lbl-wallet-method">LTC Litecoin (উইথড্র মেথড)</h5>
-                    <p><i class="fa fa-info-circle"></i> 3 block confirmation/s</p>
-                    <p><i class="fa fa-star"></i> Min. deposit >0.001 LTC</p>
-                    <p><i class="fa fa-clock"></i> Est. arrival 3 mins</p>
-                    
-                    <label id="lbl-wallet-addr-label" style="font-size:12px; color:#fff; display:block; margin-top:12px;">আপনার Litecoin (LTC) অ্যাড্রেস দিন:</label>
-                    <input type="text" id="wallet-ltc-address" class="wallet-input" placeholder="LTC Address লিখুন...">
-                    
-                    <label id="lbl-wallet-amt-label" style="font-size:12px; color:#fff; display:block; margin-top:10px;">উইথড্র পরিমাণ (USD):</label>
-                    <input type="number" id="wallet-withdraw-amount" class="wallet-input" placeholder="Amount দিন...">
-                    
-                    <button id="lbl-wallet-submit-btn" class="btn btn-primary" onclick="submitWithdrawRequest()" style="margin-top:15px; background:var(--success);">উইথড্র রিকোয়েস্ট পাঠান</button>
-                </div>
-                
-                <h4 id="lbl-wallet-history-title" style="margin:10px 0 5px 0; color:#fff;">উইথড্রাল হিস্টোরি</h4>
-                <div id="withdraw-history-container" style="flex:1; overflow-y:auto; background:#11111e; border-radius:8px; padding:10px; font-size:12px; color:#ccc;">
-                    কোনো হিস্টোরি পাওয়া যায়নি।
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div id="global-comment-modal" class="comment-modal" onclick="closeCommentPopupOutside(event)">
-        <div class="comment-popup-box">
-            <div class="comment-popup-header">
-                <b style="font-size:15px; color:#fff;"><i class="fa fa-comments text-accent"></i> <span id="lbl-comment-header">পাবলিক লাইভ কমেন্ট জোন</span></b>
-                <i class="fa fa-times" style="font-size:18px; color:#aaa; cursor:pointer;" onclick="closeCommentPopup()"></i>
-            </div>
-            <div class="comment-list-area" id="popup-comment-list-container"></div>
-            <div class="comment-input-area">
-                <input type="text" id="txt-user-comment" placeholder="আপনার কমেন্ট লিখুন...">
-                <button onclick="submitNewComment()"><i class="fa fa-paper-plane"></i></button>
-            </div>
-        </div>
-    </div>
-
-    <div id="video-player-container">
+    <!-- ==================== ৩. ফুলস্ক্রিন প্রিমিয়াম ভিডিও প্লেয়ার ==================== -->
+    <div id="video-player-container" class="modal" style="flex-direction: column;">
         <div class="player-header">
-            <button class="player-back-btn" onclick="closeVideoPlayer()"><i class="fa fa-arrow-left"></i></button>
-            <b id="playing-video-title" style="color:white; font-size:15px; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-left: 5px;">ভিдео প্লে হচ্ছে...</b>
+            <h4 id="playing-video-title" style="font-size:14px; max-width:70%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Video Title</h4>
+            <button class="player-close-btn" onclick="closeVideoPlayer()">❌ Close</button>
         </div>
         
-        <div class="ad-banner-wrapper" id="player-top-ad-wrapper"></div>
-        <div class="video-frame-box" id="player-iframe-area"></div>
-        <div class="ad-banner-wrapper" id="player-bottom-ad-wrapper"></div>
+        <!-- প্লেয়ার টপ অ্যাড -->
+        <div id="player-top-ad-wrapper" style="width: 100%; min-height: 60px; background: #111;"></div>
+        
+        <!-- ভিডিও রেন্ডার এরিয়া -->
+        <div id="player-iframe-area" style="width: 100%; flex: 1; display: flex; justify-content: center; align-items: center; background: #000;">
+            <!-- Fluid Player ইনজেক্ট হবে -->
+        </div>
+        
+        <!-- প্লেয়ার বটম অ্যাড -->
+        <div id="player-bottom-ad-wrapper" style="width: 100%; min-height: 60px; background: #111;"></div>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-    <script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
+
+    <!-- ==================== ৪. ওয়ালেট / উইথড্র পপআপ মোডাল ==================== -->
+    <div id="global-wallet-modal" class="modal" onclick="closeWalletPopupOutside(event)">
+        <div class="modal-content">
+            <h3 id="lbl-wallet-header" style="font-size:16px; margin-bottom:15px; color:var(--primary);">Earnings History</h3>
+            <div style="background:#1a1a1a; padding:12px; border-radius:6px; margin-bottom:15px; text-align:center;">
+                <span id="lbl-wallet-bal-title" style="font-size:12px; color:#aaa; display:block;">মোট ব্যালেন্স</span>
+                <span id="modal-wallet-balance" style="font-size:22px; font-weight:bold; color:var(--success);">$0.0000 USD</span>
+            </div>
+            
+            <h4 id="lbl-wallet-method" style="font-size:13px; margin-bottom:10px; color:var(--accent);">LTC Litecoin (উইথড্র মেথড)</h4>
+            
+            <div style="margin-bottom:12px;">
+                <label id="lbl-wallet-addr-label" style="font-size:12px; color:#ccc; display:block; margin-bottom:4px;"></label>
+                <input type="text" id="wallet-ltc-address" style="width:100%; padding:10px; background:#111; color:#fff; border:1px solid #333; border-radius:5px; outline:none;">
+            </div>
+            
+            <div style="margin-bottom:15px;">
+                <label id="lbl-wallet-amt-label" style="font-size:12px; color:#ccc; display:block; margin-bottom:4px;"></label>
+                <input type="number" id="wallet-withdraw-amount" step="0.0001" style="width:100%; padding:10px; background:#111; color:#fff; border:1px solid #333; border-radius:5px; outline:none;">
+            </div>
+            
+            <button id="lbl-wallet-submit-btn" onclick="submitWithdrawRequest()" style="width:100%; padding:12px; background:var(--primary); color:#000; font-weight:bold; border:none; border-radius:6px; cursor:pointer;"></button>
+            
+            <h4 id="lbl-wallet-history-title" style="margin-top:20px; font-size:13px; border-top:1px solid #333; padding-top:10px; margin-bottom:8px;">Withdrawal History</h4>
+            <div id="withdraw-history-container" style="max-height: 120px; overflow-y: auto; font-size: 12px; color: #bbb;"></div>
+            
+            <button onclick="closeWalletPopup()" style="margin-top:15px; width:100%; padding:8px; background:#333; color:#fff; border:none; border-radius:5px; cursor:pointer;">বন্ধ করুন</button>
+        </div>
+    </div>
+
+
+    <!-- ==================== ৫. লাইভ কমেন্ট মোডাল ==================== -->
+    <div id="global-comment-modal" class="modal" onclick="closeCommentPopupOutside(event)">
+        <div class="modal-content" style="display: flex; flex-direction: column; height: 80vh; max-width: 500px;">
+            <h3 id="lbl-comment-header" style="font-size:16px; color:var(--primary);">Public Live Comment Zone</h3>
+            <span id="lbl-total-comments-info" style="font-size: 11px; color: #777;">0 Comments</span>
+            
+            <div id="popup-comment-list-container" style="flex: 1; overflow-y: auto; margin: 15px 0; padding-right: 5px;">
+                <!-- কমেন্ট লোড হবে -->
+            </div>
+            
+            <div style="display: flex; gap: 5px; background: #111; padding: 5px; border-radius: 6px;">
+                <input type="text" id="txt-user-comment" style="flex: 1; padding: 10px; background: transparent; color: #fff; border: none; outline: none; font-size: 13px;">
+                <button onclick="submitNewComment()" style="padding: 10px 15px; background: var(--primary); color: #000; border: none; border-radius: 4px; cursor: pointer;"><i class="fa fa-paper-plane"></i></button>
+            </div>
+            <button onclick="closeCommentPopup()" style="margin-top: 10px; padding: 8px; background: #333; color: #fff; border: none; border-radius: 5px; cursor: pointer;">বন্ধ করুন</button>
+        </div>
+    </div>
+
+
+    <!-- ==================== ৬. কাস্টম অ্যালার্ট নোটিফিকেশন ==================== -->
+    <div id="custom-alert-zone" class="modal">
+        <div style="background: #222; border: 1px solid #444; padding: 20px; border-radius: 8px; text-align: center; max-width: 320px; width: 100%;">
+            <h4 id="lbl-alert-title" style="color: var(--danger); margin-bottom: 10px; font-size:15px;">Notice</h4>
+            <p id="custom-alert-msg" style="font-size: 13px; color: #eee; line-height:1.4; margin-bottom:15px;"></p>
+            <button id="lbl-alert-btn" onclick="closeCustomAlert()" style="padding: 8px 25px; background: var(--primary); color: #000; border: none; font-weight: bold; border-radius:4px; cursor:pointer;"></button>
+        </div>
+    </div>
+
+
+    <!-- ==================== FIXED BOTTOM NAVIGATION BAR ==================== -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" onclick="closeVideoPlayer(); closeWalletPopup(); closeCommentPopup();">
+            <i class="fa fa-home"></i>
+            <span id="lbl-nav-home">হোমপেজ</span>
+        </button>
+        <button class="nav-item" onclick="openCommentPopup()">
+            <i class="fa fa-comments"></i>
+            <span>কমেন্ট জোন</span>
+        </button>
+        <button class="nav-item" onclick="openWalletPopup()">
+            <i class="fa fa-wallet"></i>
+            <span>ওয়ালেট</span>
+        </button>
+        <button class="nav-item" id="lbl-nav-refresh" onclick="window.location.reload();">
+            <i class="fa fa-refresh"></i>
+            <span>রিফ্রেশ অ্যাপ</span>
+        </button>
+    </nav>
+
+
+    <!-- ==================== DEPENDENCIES & SCRIPTS ==================== -->
+    <!-- Firebase core & features v8 -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     
-    <!-- আলাদা করা ট্র্যাকিং এবং অ্যাড স্ক্রিপ্ট ফাইল সংযোগ (assets ফোল্ডারের ভেতর হলে path ঠিক করুন) -->
-    <script src="ads-master.js"></script>
+    <!-- Fluid Player SDK -->
+    <script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
+
+    <!-- জাভাস্ক্রিপ্ট কোড লিংক -->
+    <script src="app.js"></script> 
 </body>
-    </html>
+                    </html>
