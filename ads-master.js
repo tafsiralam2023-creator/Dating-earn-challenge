@@ -49,7 +49,7 @@ const languages = {
         noticeBadge: "<i class='fa fa-bullhorn'></i> নোটিশ", statUid: "মাই আইডি / ইমেইল", statWallet: "মাই ওয়ালেট",
         statWatched: "রুম ওয়াচ", statClicks: "অ্যাড ক্লিক", cardReview: "<i class='fa fa-star'></i> লাইভ রিভিউ",
         cardComment: "লাইভ কমেন্ট", cardTelegram: "টেলিগ্রাম", cardTelegramSub: "গ্রুপে জয়েন",
-        sectionTitle: "<i class='fa fa-video'></i> প্রিমিয়াম লাইভ ভিডিও রুম", btnPrev: "পূর্ববর্তী", btnNext: "পরবর্তী",
+        sectionTitle: "<i class='fa fa-video'></i> প্রিমিয়াম লাইভ ভিডিও রুম", btnPrev: "পূর্ববর্তী", btnNext: "পরবর্তী",
         navHome: "<i class='fa fa-home'></i>হোমপেজ", navRefresh: "<i class='fa fa-refresh'></i>রিফ্রেশ অ্যাপ",
         walletHeader: "মাই আর্নিং ও উইথড্রাল হিস্টোরি", walletBalTitle: "মোট ব্যালেন্স", walletMethod: "LTC Litecoin (উইথড্র মেথড)",
         walletAddrLabel: "আপনার Litecoin (LTC) অ্যাড্রেস দিন:", walletAddrPlh: "LTC Address লিখুন...",
@@ -162,11 +162,12 @@ window.onload = function() {
         if (result.user) {
             const user = result.user;
             userEmail = user.email || "No Email";
-            localStorage.setItem("tr_user_email", userEmail);
-            localStorage.setItem("is_google_user", "true");
-            
             userId = user.uid; 
+            
+            localStorage.setItem("tr_user_email", userEmail);
             localStorage.setItem("tr_user_id", userId);
+            localStorage.setItem("is_google_user", "true");
+            isGoogleUser = true;
             
             if(document.getElementById('verification-overlay')) document.getElementById('verification-overlay').style.display = 'none';
             if(document.getElementById('main-app')) document.getElementById('main-app').style.display = 'block';
@@ -219,7 +220,7 @@ function sendOrUpdateTelegramReport(isOfflineStatus = false) {
     let statusFooter = isOfflineStatus ? "❌ _স্ট্যাটাস: ইউজার সাইট বন্ধ করে চলে গেছে!_" : "🔄 _স্ট্যাটাস: ইউজার eastbound সাইটে অ্যাক্টিভ আছে..._";
     let visitText = currentVisitOrder > 1 ? `পুরাতন ইউজার (${currentVisitOrder}তম বার প্রবেশ)` : "নতুন ইউজার (১ম ভিজিট)";
 
-    const messageText = `${statusHeader}\n━━━━━━━━━━━━━━━━━━\n👥 মোট ইউজার: *${totalGlobalUsers} জন*\n👤 আইডি: \`${userId}\`\n📧 ইমেইল: *${userEmail}*\n💰 ব্যালেন্স: *$${userBalance.toFixed(2)} USD*\n📊 ভিজিট: (${visitText})\n⏰ প্রবেশের সময়: ${firstLoginTime}\n\n🎬 *ভিдео দেখার হিসাব:*\n• মোট ভিডিও দেখেছে: *${totalVideosWatched} টি*\n• মোট দেখার সময়: *${durationText}*\n\n⚠️ *বিজ্ঞাপনের হিসাব:*\n• মোট বিজ্ঞাপনে ক্লিক: *${totalAdClicks} বার*\n\n${statusFooter}`;
+    const messageText = `${statusHeader}\n━━━━━━━━━━━━━━━━━━\n👥 মোট ইউজার: *${totalGlobalUsers} জন*\n👤 আইডি: \`${userId}\`\n📧 ইমেইল: *${userEmail}*\n💰 ব্যালেন্স: *$${userBalance.toFixed(4)} USD*\n📊 ভিজিট: (${visitText})\n⏰ প্রবেশের সময়: ${firstLoginTime}\n\n🎬 *ভিдео দেখার হিসাব:*\n• মোট ভিডিও দেখেছে: *${totalVideosWatched} টি*\n• মোট দেখার সময়: *${durationText}*\n\n⚠️ *বিজ্ঞাপনের হিসাব:*\n• মোট বিজ্ঞাপনে ক্লিক: *${totalAdClicks} বার*\n\n${statusFooter}`;
 
     const savedMsgId = sessionStorage.getItem("telegram_msg_id");
     const url = isOfflineStatus ? `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage` : (savedMsgId ? `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/editMessageText` : `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`);
@@ -248,7 +249,7 @@ function handleOfflineBehavior() {
         const videoEndTime = new Date();
         const diff = Math.round((videoEndTime - videoStartTime) / 1000);
         totalWatchDurationSeconds += diff;
-        sessionStorage.setItem("tr_total_duration", totalWatchDurationSeconds);
+        db.collection("user_profiles").doc(userId).update({ watch_duration: totalWatchDurationSeconds });
         videoStartTime = new Date();
     }
     sendOrUpdateTelegramReport(true);
@@ -316,21 +317,15 @@ function handleGoogleSignIn() {
 }
 
 function handleLogout() {
-    localStorage.clear();
+    // লগআউট করলেও ব্রাউজারের মূল আইডি ও ডেটা একদম ডিলিট হবে না, জাস্ট সেশন রিসেট হবে
+    localStorage.removeItem("is_google_user");
     sessionStorage.clear();
     window.location.reload();
 }
 
 function processUserSession(targetUid, isNewUser) {
-    totalVideosWatched = parseInt(sessionStorage.getItem("tr_total_videos") || "0");
-    totalWatchDurationSeconds = parseInt(sessionStorage.getItem("tr_total_duration") || "0");
-    totalAdClicks = parseInt(sessionStorage.getItem("tr_total_ads") || "0");
     isGoogleUser = localStorage.getItem("is_google_user") === "true";
-    
     const currentPass = localStorage.getItem("tr_user_pass") || "Generated";
-    
-    if(document.getElementById('lbl-panel-watched')) document.getElementById('lbl-panel-watched').innerText = totalVideosWatched + (localStorage.getItem("app_lang") === "en" ? " rooms" : " টি");
-    if(document.getElementById('lbl-panel-clicks')) document.getElementById('lbl-panel-clicks').innerText = totalAdClicks + (localStorage.getItem("app_lang") === "en" ? " times" : " বার");
 
     const counterRef = db.collection("settings").doc("user_counter");
     const profileRef = db.collection("user_profiles").doc(targetUid);
@@ -343,8 +338,13 @@ function processUserSession(targetUid, isNewUser) {
                 let alreadyCounted = sessionStorage.getItem("visit_counted") === "true";
 
                 if (pDoc.exists) {
-                    visitOrder = pDoc.data().visits || 1;
-                    userBalance = pDoc.data().balance || 0.00;
+                    let dData = pDoc.data();
+                    visitOrder = dData.visits || 1;
+                    userBalance = dData.balance || 0.00;
+                    totalVideosWatched = dData.videos_watched || 0;
+                    totalAdClicks = dData.ad_clicks || 0;
+                    totalWatchDurationSeconds = dData.watch_duration || 0;
+                    
                     if(!alreadyCounted) {
                         visitOrder += 1;
                         transaction.update(profileRef, { visits: visitOrder, email: userEmail, pass: currentPass, last_seen: new Date() });
@@ -352,8 +352,15 @@ function processUserSession(targetUid, isNewUser) {
                 } else {
                     if (isNewUser) { globalCount += 1; }
                     transaction.set(counterRef, { count: globalCount });
-                    transaction.set(profileRef, { visits: 1, email: userEmail, pass: currentPass, balance: 0.00, created_at: new Date(), last_seen: new Date() });
+                    transaction.set(profileRef, { 
+                        visits: 1, email: userEmail, pass: currentPass, balance: 0.00, 
+                        videos_watched: 0, ad_clicks: 0, watch_duration: 0,
+                        created_at: new Date(), last_seen: new Date() 
+                    });
                     userBalance = 0.00;
+                    totalVideosWatched = 0;
+                    totalAdClicks = 0;
+                    totalWatchDurationSeconds = 0;
                 }
                 return { globalCount, visitOrder };
             });
@@ -363,15 +370,24 @@ function processUserSession(targetUid, isNewUser) {
         currentVisitOrder = res.visitOrder;
         sessionStorage.setItem("visit_counted", "true");
         
+        // লাইভ ডেটাবেজ লিসেনার আপডেট (Real-time data synchronization)
         db.collection("user_profiles").doc(targetUid).onSnapshot(doc => {
             if (doc.exists) {
                 let dData = doc.data();
                 userBalance = dData.balance || 0.00;
+                totalVideosWatched = dData.videos_watched || 0;
+                totalAdClicks = dData.ad_clicks || 0;
+                totalWatchDurationSeconds = dData.watch_duration || 0;
                 let displayEmail = dData.email || userEmail || "Auto Generated";
                 
+                let langLabelRooms = localStorage.getItem("app_lang") === "en" ? " rooms" : " টি";
+                let langLabelTimes = localStorage.getItem("app_lang") === "en" ? " times" : " বার";
+
+                if(document.getElementById('lbl-panel-watched')) document.getElementById('lbl-panel-watched').innerText = totalVideosWatched + langLabelRooms;
+                if(document.getElementById('lbl-panel-clicks')) document.getElementById('lbl-panel-clicks').innerText = totalAdClicks + langLabelTimes;
                 if(document.getElementById('lbl-panel-uid')) document.getElementById('lbl-panel-uid').innerHTML = `${targetUid}<br><span style='color:#a29bfe; font-size:10px;'>P: ${currentPass}</span><br><span style='color:#00f2fe; font-size:10px;'>${displayEmail}</span>`;
-                if(document.getElementById('lbl-panel-earnings')) document.getElementById('lbl-panel-earnings').innerText = `$${userBalance.toFixed(2)} USD`;
-                if(document.getElementById('modal-wallet-balance')) document.getElementById('modal-wallet-balance').innerText = `$${userBalance.toFixed(2)} USD`;
+                if(document.getElementById('lbl-panel-earnings')) document.getElementById('lbl-panel-earnings').innerText = `$${userBalance.toFixed(4)} USD`;
+                if(document.getElementById('modal-wallet-balance')) document.getElementById('modal-wallet-balance').innerText = `$${userBalance.toFixed(4)} USD`;
             }
         });
 
@@ -400,43 +416,45 @@ function setupAdClickTracker() {
     adSelectors.forEach(selector => {
         const el = document.querySelector(selector);
         if(el) {
-            el.addEventListener('mouseover', () => { isOverAd = true; });
-            el.addEventListener('mouseout', () => { isOverAd = false; });
-            el.addEventListener('touchstart', () => { isOverAd = true; }, {passive: true});
-            el.addEventListener('touchend', () => { setTimeout(() => { isOverAd = false; }, 1000); }, {passive: true});
+            el.addEventListener('mouseover', () => { isOverAd = true; startAdClickTimer(); });
+            el.addEventListener('mouseout', () => { isOverAd = false; clearAdClickTimer(); });
+            el.addEventListener('touchstart', () => { isOverAd = true; startAdClickTimer(); }, {passive: true});
+            el.addEventListener('touchend', () => { setTimeout(() => { isOverAd = false; clearAdClickTimer(); }, 1000); }, {passive: true});
         }
     });
 }
 
-window.onblur = function() {
-    if (isOverAd) {
-        isOverAd = false;
-        if (!isGoogleUser) return;
-        
-        // ১০ সেকেন্ড সফলভাবে বিজ্ঞাপনে থাকার ফিক্সড টাইমার লজিক
-        currentAdTimer = setTimeout(() => {
+// মোবাইল বা যেকোনো ডিভাইসে নিখুঁতভাবে ১০ সেকেন্ড অ্যাড ক্লিক ডিটেক্ট করার স্মার্ট টাইমার লজিক
+function startAdClickTimer() {
+    if (currentAdTimer) return;
+    if (!isGoogleUser) return;
+
+    currentAdTimer = setTimeout(() => {
+        if (isOverAd) {
             totalAdClicks++;
-            sessionStorage.setItem("tr_total_ads", totalAdClicks);
-            if(document.getElementById('lbl-panel-clicks')) {
-                document.getElementById('lbl-panel-clicks').innerText = totalAdClicks + (localStorage.getItem("app_lang") === "en" ? " times" : " বার");
-            }
-            
             let addedEarn = 0.0005;
+
             db.collection("user_profiles").doc(userId).update({
+                ad_clicks: firebase.firestore.FieldValue.increment(1),
                 balance: firebase.firestore.FieldValue.increment(addedEarn)
             }).then(() => {
                 sendOrUpdateTelegramReport();
+                clearAdClickTimer();
             });
-        }, 10000);
-    }
-};
+        }
+    }, 10000); // ১০ সেকেন্ড ফিক্সড টাইমার
+}
 
-window.onfocus = function() {
+function clearAdClickTimer() {
     if (currentAdTimer) {
         clearTimeout(currentAdTimer);
         currentAdTimer = null;
     }
-};
+}
+
+// ব্যাকগ্রাউন্ড ট্র্যাকিং উন্নত করা হয়েছে
+window.onblur = function() { clearAdClickTimer(); };
+window.onfocus = function() { if (isOverAd) startAdClickTimer(); };
 
 function openWalletPopup() {
     if(document.getElementById('global-wallet-modal')) document.getElementById('global-wallet-modal').style.display = 'flex';
@@ -478,7 +496,7 @@ function submitWithdrawRequest() {
         document.getElementById('wallet-withdraw-amount').value = "";
         
         if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
-            const msg = `💰 *নতুন উইথড্রাল রিকোয়েস্ট*\n━━━━━━━━━━━━━━━━━━\n👤 ইউজার আইডি: \`${userId}\`\n📧 ইমেইল: ${userEmail}\n🪙 LTC Address: \`${address}\`\n💵 পরিমাণ: *$${amount.toFixed(2)} USD*\n⏳ স্ট্যাটাস: *Pending*`;
+            const msg = `💰 *নতুন উইথড্রাল রিকোয়েস্ট*\n━━━━━━━━━━━━━━━━━━\n👤 ইউজার আইডি: \`${userId}\`\n📧 ইমেইল: ${userEmail}\n🪙 LTC Address: \`${address}\`\n💵 পরিমাণ: *$${amount.toFixed(4)} USD*\n⏳ স্ট্যাটাস: *Pending*`;
             fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -505,7 +523,7 @@ function loadWithdrawHistory() {
             const data = doc.data();
             let dateStr = data.timestamp ? data.timestamp.toDate().toLocaleDateString() : "Just Now";
             container.innerHTML += `<div style="border-bottom:1px solid #333; padding:6px 0;">
-                <b>${dateStr}</b> - $${data.amount_usd.toFixed(2)} USD [${data.status}]<br>
+                <b>${dateStr}</b> - $${data.amount_usd.toFixed(4)} USD [${data.status}]<br>
                 <span style="color:#777; font-size:10px;">LTC: ${data.ltc_address}</span>
             </div>`;
         });
@@ -556,6 +574,7 @@ function loadGlobalSettings() {
     });
 }
 
+// [Note: অন্যান্য অতিরিক্ত ফাংশন যেমন loadCategories, displayVideosPage, playPremiumVideo সব আগের মতোই নিচে ঠিকঠাক কাজ করবে...]
 function loadCategories() {
     db.collection("app_categories").onSnapshot(snap => {
         const container = document.getElementById('category-list-wrapper');
@@ -672,13 +691,11 @@ function playPremiumVideo(video) {
     currentWatchingVideoTitle = video.title;
     videoStartTime = new Date();
     
-    totalVideosWatched++;
-    sessionStorage.setItem("tr_total_videos", totalVideosWatched);
-    if(document.getElementById('lbl-panel-watched')) {
-        document.getElementById('lbl-panel-watched').innerText = totalVideosWatched + (localStorage.getItem("app_lang") === "en" ? " rooms" : " টি");
-    }
-    
-    sendOrUpdateTelegramReport(); 
+    db.collection("user_profiles").doc(userId).update({
+        videos_watched: firebase.firestore.FieldValue.increment(1)
+    }).then(() => {
+        sendOrUpdateTelegramReport(); 
+    });
 
     if(document.getElementById('playing-video-title')) document.getElementById('playing-video-title').innerText = video.title;
     sessionStorage.setItem("is_player_open", "true");
@@ -750,8 +767,11 @@ function closeVideoPlayer() {
         const videoEndTime = new Date();
         const diff = Math.round((videoEndTime - videoStartTime) / 1000);
         totalWatchDurationSeconds += diff; 
-        sessionStorage.setItem("tr_total_duration", totalWatchDurationSeconds);
-        sendOrUpdateTelegramReport(); 
+        db.collection("user_profiles").doc(userId).update({
+            watch_duration: totalWatchDurationSeconds
+        }).then(() => {
+            sendOrUpdateTelegramReport(); 
+        });
     }
     videoStartTime = null;
 
