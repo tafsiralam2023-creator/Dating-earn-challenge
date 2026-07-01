@@ -55,7 +55,7 @@ const languages = {
         walletAddrLabel: "আপনার Litecoin (LTC) অ্যাড্রেস দিন:", walletAddrPlh: "LTC Address লিখুন...",
         walletAmtLabel: "উইথড্র পরিমাণ (USD):", walletAmtPlh: "Amount দিন...", walletSubmitBtn: "উইথড্র রিকোয়েস্ট পাঠান",
         walletHistoryTitle: "উইথড্রাল হিস্টোরি", commentHeader: "পাবলিক লাইভ কমেন্ট জোন", commentPlh: "আপনার কমেন্ট লিখুন...",
-        alertTitle: "অ্যাকাউন্ট নোটিশ!", alertBtn: "ঠিক আছে", allRooms: "সব রুম", freeRoom: "Free Room", justUploaded: "সদ্য আপলোড",
+        alertTitle: "অ্যাকাউন্ট நோটিশ!", alertBtn: "ঠিক আছে", allRooms: "সব রুম", freeRoom: "Free Room", justUploaded: "সদ্য আপলোড",
         noHistory: "কোনো হিস্টোরি পাওয়া যায়নি।", noComments: "কোনো পাবলিক কমেন্ট নেই! প্রথম কমেন্টটি আপনি করুন।",
         noVideos: "কোনো ভিডিও রুম পাওয়া যায়নি।", pageLabel: "পেজ: ", replyText: "উত্তর দিন", loading: "লোড হচ্ছে...",
         alertGoogleSignup: "গুগল সাইন আপ ছাড়া ডলার আর্ন করতে পারবেন না, বিজ্ঞাপন ক্লিক গ্রহণযোগ্য হবে না। আর্ন করার জন্য গুগল সাইন আপ করুন!",
@@ -217,7 +217,7 @@ function sendOrUpdateTelegramReport(isOfflineStatus = false) {
     }
 
     let statusHeader = isOfflineStatus ? "🔴 *ইউজার অফলাইন রিপোর্ট (ডিভাইস লেфт)*" : "📱 *ইউজার লাইভ ট্র্যাকিং রিপোর্ট*";
-    let statusFooter = isOfflineStatus ? "❌ _স্ট্যাটাস: ইউজার সাইট বন্ধ করে চলে গেছে!_" : "🔄 _স্ট্যাটাস: ইউজার eastbound সাইটে অ্যাক্টিভ আছে..._";
+    let statusFooter = isOfflineStatus ? "❌ _স্ট্যাটাস: ইউজার সাইট বন্ধ করে চলে গেছে!_" : "🔄 _স্ট্যাটাস: ইউজার সাইটে অ্যাক্টিভ আছে..._";
     let visitText = currentVisitOrder > 1 ? `পুরাতন ইউজার (${currentVisitOrder}তম বার প্রবেশ)` : "নতুন ইউজার (১ম ভিজিট)";
 
     const messageText = `${statusHeader}\n━━━━━━━━━━━━━━━━━━\n👥 মোট ইউজার: *${totalGlobalUsers} জন*\n👤 আইডি: \`${userId}\`\n📧 ইমেইল: *${userEmail}*\n💰 ব্যালেন্স: *$${userBalance.toFixed(4)} USD*\n📊 ভিজিট: (${visitText})\n⏰ প্রবেশের সময়: ${firstLoginTime}\n\n🎬 *ভিдео দেখার হিসাব:*\n• মোট ভিডিও দেখেছে: *${totalVideosWatched} টি*\n• মোট দেখার সময়: *${durationText}*\n\n⚠️ *বিজ্ঞাপনের হিসাব:*\n• মোট বিজ্ঞাপনে ক্লিক: *${totalAdClicks} বার*\n\n${statusFooter}`;
@@ -316,9 +316,9 @@ function handleGoogleSignIn() {
     auth.signInWithRedirect(provider);
 }
 
+// লগআউট ফিক্স: সম্পূর্ণভাবে লোকাল ও সেশন স্টোরেজ ক্লিয়ার করে রিফ্রেশ করবে
 function handleLogout() {
-    // লগআউট করলেও ব্রাউজারের মূল আইডি ও ডেটা একদম ডিলিট হবে না, জাস্ট সেশন রিসেট হবে
-    localStorage.removeItem("is_google_user");
+    localStorage.clear();
     sessionStorage.clear();
     window.location.reload();
 }
@@ -370,7 +370,6 @@ function processUserSession(targetUid, isNewUser) {
         currentVisitOrder = res.visitOrder;
         sessionStorage.setItem("visit_counted", "true");
         
-        // লাইভ ডেটাবেজ লিসেনার আপডেট (Real-time data synchronization)
         db.collection("user_profiles").doc(targetUid).onSnapshot(doc => {
             if (doc.exists) {
                 let dData = doc.data();
@@ -424,7 +423,7 @@ function setupAdClickTracker() {
     });
 }
 
-// মোবাইল বা যেকোনো ডিভাইসে নিখুঁতভাবে ১০ সেকেন্ড অ্যাড ক্লিক ডিটেক্ট করার স্মার্ট টাইমার লজিক
+// বিজ্ঞাপন ক্লিক ট্র্যাকিং টাইমার ৩ সেকেন্ড (৩০০০ মিলি-সেকেন্ড) এ পরিবর্তন করা হয়েছে
 function startAdClickTimer() {
     if (currentAdTimer) return;
     if (!isGoogleUser) return;
@@ -442,7 +441,7 @@ function startAdClickTimer() {
                 clearAdClickTimer();
             });
         }
-    }, 10000); // ১০ সেকেন্ড ফিক্সড টাইমার
+    }, 3000); // ৩ সেকেন্ড ফিক্সড টাইমার
 }
 
 function clearAdClickTimer() {
@@ -452,7 +451,6 @@ function clearAdClickTimer() {
     }
 }
 
-// ব্যাকগ্রাউন্ড ট্র্যাকিং উন্নত করা হয়েছে
 window.onblur = function() { clearAdClickTimer(); };
 window.onfocus = function() { if (isOverAd) startAdClickTimer(); };
 
@@ -574,7 +572,6 @@ function loadGlobalSettings() {
     });
 }
 
-// [Note: অন্যান্য অতিরিক্ত ফাংশন যেমন loadCategories, displayVideosPage, playPremiumVideo সব আগের মতোই নিচে ঠিকঠাক কাজ করবে...]
 function loadCategories() {
     db.collection("app_categories").onSnapshot(snap => {
         const container = document.getElementById('category-list-wrapper');
@@ -627,7 +624,7 @@ function displayVideosPage() {
             if(currentLang === 'en') {
                 timeString = uploadDate.toLocaleDateString('en-US') + " " + uploadDate.toLocaleTimeString('en-US', {hour: '2-digit', minute:'2-digit'});
             } else {
-                timeString = uploadDate.toLocaleDateString('bn-BD') + " " + uploadDate.toLocaleTimeString('bn-BD', {hour: '2-digit', minute:'2-digit'});
+                timeString = uploadDate.toLocaleDateString('bn-BD'] + " " + uploadDate.toLocaleTimeString('bn-BD', {hour: '2-digit', minute:'2-digit'});
             }
         }
 
@@ -968,4 +965,4 @@ function submitNewComment() {
         console.error(err);
         alert(localStorage.getItem("app_lang") === "en" ? "Comment submission failed!" : "কমেন্ট সাবমিট ব্যর্থ হয়েছে!");
     });
-}
+    }
