@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dating Earn Pro - Master Premium Panel</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.css" type="text/css"/>
+
+    <style>
+        :root {
+            --bg-dark: #0a0a0c;
+            --card-bg: #13131a;
+            --accent-purple: #8257e5;
+            --accent-pink: #ff007f;
+            --text-main: #ffffff;
+            --text-sub: #b3b3b6;
+            --success: #00e676;
+            --danger: #ff3d00;
+            --gradient-primary: linear-gradient(135deg, #ff007f 0%, #7928ca 100%);
+            --gradient-card: linear-gradient(180deg, #1c1c24 0%, #13131a 100%);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Poppins', 'Hind Siliguri', sans-serif; background-color: var(--bg-dark); color: var(--text-main); overflow-x: hidden; }
+
+        /* Verification Overlay System */
+        #verification-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-dark); z-index: 99999; display: flex; justify-content: center; align-items: center; padding: 20px; overflow-y: auto; }
+        .v-box { background: var(--card-bg); width: 100%; max-width: 420px; border-radius: 20px; padding: 30px 24px; border: 1px solid #222; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5); margin: auto; }
+        .v-box h2 { font-size: 22px; margin-bottom: 12px; font-weight: 600; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .v-box p { font-size: 13.5px; color: var(--text-sub); margin-bottom: 24px; line-height: 1.6; }
+        .v-btn { width: 100%; padding: 14px; border-radius: 12px; border: none; font-size: 15px; font-weight: 600; color: #fff; cursor: pointer; transition: 0.3s; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-purple { background: var(--gradient-primary); box-shadow: 0 4px 15px rgba(255, 0, 127, 0.3); }
+        .btn-purple:hover { opacity: 0.9; }
+        .btn-outline { background: transparent; border: 1px solid #333; color: var(--text-main); }
+        .btn-outline:hover { background: #1c1c24; border-color: #555; }
+        
+        /* Premium Google Button */
+        .btn-google { background: #ffffff; color: #1f1f1f; font-weight: 600; font-family: 'Poppins', sans-serif; border: 1px solid #dadce0; box-shadow: 0 2px 4px rgba(0,0,0,0.08); transition: background-color 0.2s, box-shadow 0.2s; }
+        .btn-google:hover { background: #f8f9fa; box-shadow: 0 4px 8px rgba(0,0,0,0.12); }
+        .btn-google img { width: 22px; height: 22px; object-fit: contain; flex-shrink: 0; }
+        
+        /* Custom Register/Login Forms */
+        .manual-form-toggle { display: flex; justify-content: center; gap: 15px; margin-bottom: 20px; font-size: 14px; }
+        .manual-form-toggle span { cursor: pointer; color: var(--text-sub); padding-bottom: 4px; }
+        .manual-form-toggle span.active { color: var(--accent-pink); border-bottom: 2px solid var(--accent-pink); font-weight: 600; }
+        .form-row-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .form-select-custom { background: #0a0a0c; border: 1px solid #222; padding: 14px; border-radius: 12px; color: #fff; font-size: 13.5px; outline: none; width: 100%; font-family: inherit; }
+
+        /* Main Container */
+        .app-container { width: 100%; max-width: 1200px; margin: 0 auto; background: var(--bg-dark); min-height: 100vh; padding-bottom: 90px; position: relative; }
+        
+        /* Header Top Bar */
+        .top-navbar { display: flex; justify-content: space-between; align-items: center; padding: 16px; background: rgba(19, 19, 26, 0.85); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #1c1c24; }
+        .brand-logo { font-size: 18px; font-weight: 700; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; gap: 8px; }
+        .live-tag-badge { background: rgba(0, 230, 118, 0.15); color: var(--success); font-size: 10.5px; font-weight: 600; padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(0, 230, 118, 0.3); display: flex; align-items: center; gap: 5px; }
+
+        /* Lang Switcher */
+        .lang-select { background: #1c1c24; color: #fff; border: 1px solid #333; padding: 5px 8px; border-radius: 6px; font-size: 12px; outline: none; cursor: pointer; }
+
+        /* Premium Notice Banner */
+        .notice-board-wrapper { margin: 12px 16px; background: linear-gradient(90deg, rgba(130,87,229,0.15) 0%, rgba(255,0,127,0.05) 100%); border-left: 4px solid var(--accent-pink); padding: 12px 16px; border-radius: 0 12px 12px 0; display: flex; flex-direction: column; gap: 6px; }
+        .notice-badge { align-self: flex-start; background: var(--accent-pink); color: #fff; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; }
+        .notice-marquee { font-size: 12.5px; color: var(--text-sub); line-height: 1.5; font-weight: 400; }
+
+        /* Dynamic Banner Spaces */
+        .ad-space-banner-holder { margin: 16px; background: #13131a; border: 1px solid #1c1c24; border-radius: 12px; display: flex; justify-content: center; align-items: center; overflow: hidden; min-height: 75px; position: relative; }
+        .ad-space-banner-holder iframe, .ad-space-banner-holder video, .ad-space-banner-holder img { width: 100% !important; max-width: 100% !important; height: auto; border: none; display: block; margin: 0 auto; }
+
+        /* Live User Status Grid Dashboard */
+        .stats-dashboard-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 16px; }
+        .stat-widget-box { background: var(--gradient-card); border: 1px solid #1c1c24; padding: 16px; border-radius: 16px; display: flex; align-items: center; gap: 14px; position: relative; overflow: hidden; }
+        .stat-widget-box::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--accent-purple); opacity: 0.7; }
+        .stat-widget-box.earnings-box::before { background: var(--success); }
+        .stat-icon-circle { width: 42px; height: 42px; border-radius: 50%; background: rgba(130, 87, 229, 0.1); display: flex; justify-content: center; align-items: center; color: var(--accent-purple); font-size: 18px; }
+        .earnings-box .stat-icon-circle { background: rgba(0, 230, 118, 0.1); color: var(--success); }
+        .stat-details-info { display: flex; flex-direction: column; min-width: 0; }
+        .stat-label-title { font-size: 11px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+        .stat-numeric-value { font-size: 13px; font-weight: 700; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.4; }
+
+        /* Grid Action Cards Menu */
+        .action-menu-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 16px; }
+        .action-card-btn { background: var(--card-bg); border: 1px solid #1c1c24; border-radius: 14px; padding: 12px 8px; text-align: center; cursor: pointer; transition: 0.3s ease; position: relative; text-decoration: none; color: inherit; display: block; }
+        .action-card-btn:active { transform: scale(0.96); background: #1c1c24; }
+        .action-card-icon { font-size: 20px; color: var(--accent-pink); margin-bottom: 6px; display: inline-block; }
+        .action-card-btn.tg-card .action-card-icon { color: #0088cc; }
+        .action-card-btn.star-card .action-card-icon { color: #ffbc00; }
+        .action-card-title { font-size: 11.5px; font-weight: 600; color: var(--text-main); margin-bottom: 2px; }
+        .action-card-sub { font-size: 9.5px; color: var(--text-sub); display: block; }
+        .notification-count-dot { position: absolute; top: -5px; right: -5px; background: var(--danger); color: #fff; font-size: 10px; font-weight: bold; width: 18px; height: 18px; border-radius: 50%; display: none; justify-content: center; align-items: center; border: 2px solid var(--bg-dark); box-shadow: 0 0 10px rgba(255,61,0,0.5); }
+
+        /* Horizontal Scroll Category Selector */
+        .category-scroller-bar { display: flex; gap: 8px; overflow-x: auto; padding: 4px 16px 12px 16px; scrollbar-width: none; }
+        .category-scroller-bar::-webkit-scrollbar { display: none; }
+        .cat-btn { background: #13131a; border: 1px solid #1c1c24; color: var(--text-sub); padding: 8px 16px; border-radius: 20px; font-size: 12.5px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: 0.2s; }
+        .cat-btn.active { background: var(--gradient-primary); color: #fff; border-color: transparent; box-shadow: 0 4px 12px rgba(255, 0, 127, 0.25); }
+
+        /* Video Feed Header Component */
+        .section-header-title-strip { padding: 12px 16px 4px 16px; font-size: 15px; font-weight: 600; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; }
+
+        /* Dynamic Responsive Video Grid */
+        .video-responsive-grid-feed { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 12px 16px; }
+        .video-card { background: var(--gradient-card); border: 1px solid #1c1c24; border-radius: 16px; overflow: hidden; position: relative; cursor: pointer; transition: transform 0.2s; }
+        .video-card:active { transform: scale(0.97); }
+        .video-thumb { width: 100%; aspect-ratio: 4/5; object-fit: cover; display: block; background: #0e0e12; }
+        .badge-new { position: absolute; top: 8px; left: 8px; background: var(--danger); color: #fff; font-size: 9px; font-weight: bold; padding: 3px 7px; border-radius: 6px; box-shadow: 0 4px 8px rgba(0,0,0,0.3); z-index: 5; }
+        .video-info { padding: 10px; display: flex; flex-direction: column; gap: 4px; }
+        .video-title { font-size: 12.5px; font-weight: 600; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .upload-time-label { font-size: 10px; color: var(--text-sub); display: flex; align-items: center; gap: 4px; }
+        .video-price { font-size: 11px; font-weight: 600; color: var(--success); display: flex; align-items: center; gap: 4px; margin-top: 2px; }
+
+        /* Pagination Navigator Footer */
+        .pagination-footer-nav { display: flex; justify-content: center; align-items: center; gap: 16px; padding: 16px; margin-bottom: 10px; }
+        .page-ctrl-btn { background: #13131a; border: 1px solid #1c1c24; color: #fff; padding: 8px 16px; border-radius: 10px; font-size: 12px; font-weight: 600; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 6px; }
+        .page-ctrl-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .page-indicator-txt { font-size: 12.5px; color: var(--text-sub); font-weight: 600; }
+
+        /* Legal Fixed Footer Section */
+        .legal-footer-wrapper { margin: 20px 16px; padding: 18px; background: rgba(19, 19, 26, 0.6); border: 1px solid #1c1c24; border-radius: 14px; font-size: 11.5px; color: #8a8a93; text-align: justify; line-height: 1.6; }
+        .legal-footer-wrapper h4 { font-size: 13px; color: var(--accent-pink); margin-bottom: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; }
+
+        /* Fixed Bottom Tab Navigation Menu Bar */
+        .bottom-nav-tab-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 1200px; background: rgba(10, 10, 12, 0.92); backdrop-filter: blur(15px); border-top: 1px solid #1c1c24; display: grid; grid-template-columns: repeat(2, 1fr); padding: 8px 0; z-index: 9999; box-shadow: 0 -10px 30px rgba(0,0,0,0.5); }
+        .tab-nav-item { background: transparent; border: none; color: var(--text-sub); display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; font-size: 11px; font-weight: 500; font-family: inherit; text-decoration: none; transition: 0.2s; }
+        .tab-nav-item i { font-size: 18px; transition: 0.2s; }
+        .tab-nav-item.active, .tab-nav-item:hover { color: var(--accent-pink); }
+
+        /* Immersive Premium Fullscreen Video Studio */
+        #video-player-container { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 1200px; height: 100vh; background: #000; z-index: 10000; display: none; flex-direction: column; }
+        .player-header-bar { display: flex; align-items: center; padding: 14px 16px; background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%); position: absolute; top: 0; left: 0; width: 100%; z-index: 10; color: #fff; }
+        .player-back-btn { background: rgba(255,255,255,0.1); border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #fff; cursor: pointer; font-size: 16px; backdrop-filter: blur(5px); margin-right: 12px; }
+        .player-title-text { font-size: 14px; font-weight: 600; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+        
+        .immersive-player-core-box { flex: 1; display: flex; justify-content: center; align-items: center; background: #000; position: relative; overflow: hidden; }
+        .player-iframe-embed-holder { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; position: relative; }
+        .player-iframe-embed-holder video { width: 100% !important; height: 100% !important; object-fit: contain; }
+
+        .player-ad-wrapper-box { background: #0a0a0c; border-top: 1px solid #1c1c24; padding: 8px 16px; display: flex; justify-content: center; align-items: center; min-height: 70px; overflow: hidden; position: relative; }
+        .player-ad-wrapper-box.top-ad-fixed { border-top: none; border-bottom: 1px solid #1c1c24; }
+        .player-ad-wrapper-box iframe, .player-ad-wrapper-box video, .player-ad-wrapper-box img { width: 100% !important; max-width: 100% !important; height: auto; border: none; display: block; margin: 0 auto; }
+
+        /* Sheets / Modals */
+        .bottom-sheet-modal-backdrop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); z-index: 20000; display: none; justify-content: center; align-items: flex-end; }
+        .sheet-modal-surface-card { background: var(--card-bg); width: 100%; max-width: 500px; border-radius: 24px 24px 0 0; padding: 24px 20px; box-shadow: 0 -10px 30px rgba(0,0,0,0.5); display: flex; flex-direction: column; max-height: 85vh; border-top: 1px solid #222; position: relative; animation: slideUp 0.3s cubic-bezier(0.25, 1, 0.5, 1); }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .sheet-modal-close-handle { width: 40px; height: 5px; background: #333; border-radius: 10px; align-self: center; margin-bottom: 20px; cursor: pointer; }
+        .sheet-modal-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+        .sheet-modal-title { font-size: 16px; font-weight: 600; color: var(--text-main); }
+        .sheet-modal-body-scrollable { overflow-y: auto; flex: 1; padding-right: 4px; scrollbar-width: thin; }
+        
+        /* Modern Form Controls */
+        .form-input-group { margin-bottom: 16px; display: flex; flex-direction: column; gap: 6px; text-align: left; }
+        .form-input-group label { font-size: 12px; color: var(--text-sub); font-weight: 500; }
+        .form-text-input { background: #0a0a0c; border: 1px solid #222; padding: 14px; border-radius: 12px; color: #fff; font-size: 13.5px; font-family: inherit; outline: none; transition: 0.2s; width: 100%; }
+        .form-text-input:focus { border-color: var(--accent-purple); box-shadow: 0 0 0 3px rgba(130,87,229,0.15); }
+        .form-action-submit-btn { background: var(--gradient-primary); color: #fff; border: none; padding: 14px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; width: 100%; margin-top: 6px; box-shadow: 0 4px 15px rgba(255, 0, 127, 0.2); }
+        .form-action-submit-btn:active { transform: scale(0.98); }
+
+        /* Comments visual system */
+        .comment-item { background: #0a0a0c; border: 1px solid #181822; padding: 12px; border-radius: 14px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 4px; }
+        .comment-meta { font-size: 11px; font-weight: 600; color: var(--accent-purple); display: flex; justify-content: space-between; }
+        .comment-text { font-size: 12.5px; color: var(--text-main); line-height: 1.4; word-break: break-word; }
+        .btn-reply-trigger { align-self: flex-start; background: transparent; border: none; color: var(--text-sub); font-size: 10.5px; font-weight: 600; cursor: pointer; margin-top: 4px; display: flex; align-items: center; gap: 4px; padding: 2px 4px; }
+        .btn-reply-trigger:hover { color: var(--accent-pink); }
+        .reply-section { border-left: 2px solid #222; margin-left: 6px; padding-left: 10px; margin-top: 8px; display: flex; flex-direction: column; gap: 8px; }
+        .reply-item { background: #13131a; border: 1px solid #1c1c24; padding: 8px 10px; border-radius: 10px; display: flex; flex-direction: column; gap: 2px; }
+
+        /* Star Rating Dynamic Layout */
+        .rating-interactive-row { display: flex; gap: 8px; justify-content: center; margin: 12px 0 20px 0; font-size: 26px; color: #222; }
+        .rating-interactive-row i { cursor: pointer; transition: transform 0.2s; }
+        .rating-interactive-row i.active { color: #ffbc00; text-shadow: 0 0 10px rgba(255,188,0,0.3); }
+        .rating-interactive-row i:active { transform: scale(1.2); }
+
+        /* Custom Alert Dialog */
+        #custom-alert-zone { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:999999; display:none; justify-content:center; align-items:center; padding:20px; }
+        .alert-card { background: var(--card-bg); border: 1px solid #222; width:100%; max-width:360px; border-radius:20px; padding:24px; text-align:center; box-shadow:0 15px 30px rgba(0,0,0,0.5); }
+        .alert-card i { font-size:42px; color: var(--accent-pink); margin-bottom:14px; }
+        .alert-card h3 { font-size:18px; font-weight:600; margin-bottom:10px; color:#fff; }
+        .alert-card p { font-size:13px; color: var(--text-sub); line-height:1.5; margin-bottom:20px; }
+
+        /* Loader Animation Element */
+        .loading-spinner { border: 3px solid rgba(255,255,255,0.1); border-radius: 50%; border-top: 3px solid var(--accent-pink); width: 24px; height: 24px; animation: spin 1s linear infinite; display: inline-block; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Responsive Media Queries */
+        @media (min-width: 600px) {
+            .stats-dashboard-grid { grid-template-columns: repeat(4, 1fr); }
+            .video-responsive-grid-feed { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        }
+        @media (min-width: 900px) {
+            .video-responsive-grid-feed { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+            .action-menu-row { gap: 16px; }
+        }
+        @media (min-width: 1200px) {
+            .video-responsive-grid-feed { grid-template-columns: repeat(5, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="verification-overlay">
+        <div class="v-box" id="terms-box">
+            <h2>Dating Earn Pro</h2>
+            <p>আমাদের প্রিমিয়াম ডেটিং আर्निंग ভিডিও প্যানেলে প্রবেশ করার জন্য আপনাকে টার্মস অফ সার্ভিস এবং নিয়মাবলী মেনে চলতে হবে। এখানে ভুলভাল বা স্প্যাম ক্লিক করলে অ্যাকাউন্ট ব্যান করা হবে।</p>
+            <button class="v-btn btn-purple" onclick="acceptTerms()">আমি সহমত, এগিয়ে যান</button>
+            <button class="v-btn btn-outline" onclick="accessDenied()">প্রস্থান করুন</button>
+        </div>
+        
+        <div class="v-box" id="age-box" style="display: none;">
+            <h2>Adult Verification (১৮+)</h2>
+            <p>এই প্যানেলে থাকা লাইভ ভিডিও রুমে প্রবেশ করার আগে নিশ্চিত করুন আপনার বয়স কি ১৮ বছরের উপরে?</p>
+            <button class="v-btn btn-purple" onclick="showAuthSelection()">হ্যাঁ, আমার বয়স ১৮+</button>
+            <button class="v-btn btn-outline" onclick="accessDenied()">না, আমি ছোট</button>
+        </div>
+
+        <div class="v-box" id="google-box" style="display: none;">
+            <h2>অ্যাকাউন্ট ভেরিফিকেশন ও এক্সেস</h2>
+            <p>প্যানেলে প্রবেশ করতে এবং পেমেন্ট উইথড্র নিরাপত্তা নিশ্চিত করার জন্য গুগল সাইন-আপ অথবা প্রিমিয়াম ম্যানুয়াল অ্যাকাউন্ট তৈরি করুন।</p>
+            
+            <button class="v-btn btn-google" onclick="handleGoogleSignIn()">
+                <img src="https://i.ibb.co/V09x8kv7/google-app-logo-icon-free-png.png" alt="Google Logo"> Sign Up with Google
+            </button>
+            
+            <div style="margin: 15px 0; color: #555; font-size: 13px;">— অথবা ম্যানুয়াল একাউন্ট —</div>
+
+            <div class="manual-form-toggle">
+                <span id="tab-toggle-reg" class="active" onclick="switchManualForm('reg')">রেজিস্ট্রেশন</span>
+                <span id="tab-toggle-login" onclick="switchManualForm('login')">লগইন</span>
+            </div>
+
+            <div id="manual-reg-section">
+                <div class="form-input-group">
+                    <input type="text" id="m-reg-username" class="form-text-input" placeholder="ইউজারনেম দিন (Username)">
+                </div>
+                <div class="form-input-group">
+                    <input type="email" id="m-reg-email" class="form-text-input" placeholder="জিমেইল এড্রেস (Gmail)">
+                </div>
+                <div class="form-row-grid">
+                    <div class="form-input-group">
+                        <input type="number" id="m-reg-age" class="form-text-input" placeholder="বয়স (Age)">
+                    </div>
+                    <div class="form-input-group">
+                        <select id="m-reg-gender" class="form-select-custom">
+                            <option value="">লিঙ্গ</option>
+                            <option value="Male">পুরুষ</option>
+                            <option value="Female">নারী</option>
+                            <option value="Other">অন্যান্য</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-input-group">
+                    <input type="password" id="m-reg-pass" class="form-text-input" placeholder="পাসওয়ার্ড তৈরি করুন">
+                </div>
+                <div class="form-input-group">
+                    <input type="password" id="m-reg-pass-conf" class="form-text-input" placeholder="কনফার্ম পাসওয়ার্ড">
+                </div>
+                <button class="v-btn btn-purple" style="margin-top:5px;" onclick="handleManualRegister()">অ্যাকাউন্ট তৈরি করুন</button>
+            </div>
+
+            <div id="manual-login-section" style="display:none;">
+                <div class="form-input-group">
+                    <input type="email" id="m-login-email" class="form-text-input" placeholder="আপনার জিমেইল এড্রেস">
+                </div>
+                <div class="form-input-group">
+                    <input type="password" id="m-login-pass" class="form-text-input" placeholder="আপনার পাসওয়ার্ড">
+                </div>
+                <button class="v-btn btn-purple" style="margin-top:5px;" onclick="handleManualLogin()">লগইন করুন</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="app-container" id="main-app" style="display: none;">
+        
+        <div class="top-navbar">
+            <div class="brand-logo" id="lbl-app-name">Dating Earn Pro</div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <div class="live-tag-badge" id="lbl-premium-tag"><i class="fa fa-circle"></i> প্রিমিয়াম লাইভ</div>
+                <select class="lang-select" id="lang-switcher" onchange="changeLanguage(this.value)">
+                    <option value="bn">BD</option>
+                    <option value="en">EN</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="notice-board-wrapper">
+            <span class="notice-badge" id="lbl-notice-badge"><i class="fa fa-bullhorn"></i> নোটিশ</span>
+            <div class="notice-marquee" id="app-notice-text">লোডিং... আমাদের প্রিমিয়াম প্যানেলে আপনাকে স্বাগতম।</div>
+        </div>
+
+        <div class="ad-space-banner-holder" id="top-cover-ad-wrapper"></div>
+
+        <div class="stats-dashboard-grid">
+            <div class="stat-widget-box">
+                <div class="stat-icon-circle"><i class="fa fa-user-shield"></i></div>
+                <div class="stat-details-info">
+                    <span class="stat-label-title" id="lbl-stat-uid">মাই আইডি / ইমেইল</span>
+                    <span class="stat-numeric-value" id="lbl-panel-uid">Connecting...</span>
+                </div>
+            </div>
+            <div class="stat-widget-box earnings-box" onclick="openWalletPopup()" style="cursor: pointer;">
+                <div class="stat-icon-circle"><i class="fa fa-wallet"></i></div>
+                <div class="stat-details-info">
+                    <span class="stat-label-title" id="lbl-stat-wallet">মাই ওয়ালেট</span>
+                    <span class="stat-numeric-value" id="lbl-panel-earnings">$0.00 USD</span>
+                </div>
+            </div>
+            <div class="stat-widget-box">
+                <div class="stat-icon-circle"><i class="fa fa-eye"></i></div>
+                <div class="stat-details-info">
+                    <span class="stat-label-title" id="lbl-stat-watched">রুম ওয়াচ</span>
+                    <span class="stat-numeric-value" id="lbl-panel-watched">0 টি</span>
+                </div>
+            </div>
+            <div class="stat-widget-box">
+                <div class="stat-icon-circle"><i class="fa fa-mouse-pointer"></i></div>
+                <div class="stat-details-info">
+                    <span class="stat-label-title" id="lbl-stat-clicks">অ্যাড ক্লিক</span>
+                    <span class="stat-numeric-value" id="lbl-panel-clicks">0 বার</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-menu-row">
+            <div class="action-card-btn star-card" onclick="document.getElementById('global-review-modal').style.display='flex'">
+                <i class="fa fa-star action-card-icon"></i>
+                <span class="action-card-title" id="lbl-card-review">লাইভ রিভিউ</span>
+                <span class="action-card-sub" id="lbl-rating-summary">⭐ 5.0</span>
+            </div>
+            <div class="action-card-btn" onclick="openCommentPopup()">
+                <div class="notification-count-dot" id="lbl-comment-badge">0</div>
+                <i class="fa fa-comments action-card-icon" style="color:var(--accent-purple);"></i>
+                <span class="action-card-title" id="lbl-card-comment">লাইভ কমেন্ট</span>
+                <span class="action-card-sub" id="lbl-total-comments-info">0 টি</span>
+            </div>
+            <a href="https://t.me/bestchoicev26bot" target="_blank" class="action-card-btn tg-card">
+                <i class="fab fa-telegram action-card-icon"></i>
+                <span class="action-card-title" id="lbl-card-telegram">টেলিগ্রাম</span>
+                <span class="action-card-sub" id="lbl-card-telegram-sub">গ্রুপে জয়েন</span>
+            </a>
+        </div>
+
+        <div class="ad-space-banner-holder" id="middle-ad-wrapper"></div>
+
+        <div class="category-scroller-bar" id="category-list-wrapper">
+            <button class="cat-btn active" id="cat-all">সব রুম</button>
+        </div>
+
+        <div class="section-header-title-strip">
+            <span id="lbl-section-title"><i class="fa fa-video"></i> প্রিমিয়াম লাইভ ভিডিও রুম</span>
+        </div>
+
+        <div class="video-responsive-grid-feed" id="video-list-container"></div>
+
+        <div class="pagination-footer-nav">
+            <button class="page-ctrl-btn" id="btn-prev-page" onclick="changeVideoPage(-1)" disabled><i class="fa fa-chevron-left"></i> <span id="lbl-btn-prev">পূর্ববর্তী</span></button>
+            <span class="page-indicator-txt" id="lbl-page-number">পেজ: 1 / 1</span>
+            <button class="page-ctrl-btn" id="btn-next-page" onclick="changeVideoPage(1)" disabled><span id="lbl-btn-next">পরবর্তী</span> <i class="fa fa-chevron-right"></i></button>
+        </div>
+
+        <div class="ad-space-banner-holder" id="home-bottom-ad-wrapper"></div>
+
+        <div class="legal-footer-wrapper" id="legal-footer-area"></div>
+
+        <div class="bottom-nav-tab-bar">
+            <button class="tab-nav-item active" onclick="closeVideoPlayer(); window.scrollTo({top: 0, behavior: 'smooth'});">
+                <span id="lbl-nav-home"><i class="fa fa-home"></i>হোমপেজ</span>
+            </button>
+            <button class="tab-nav-item" onclick="window.location.reload();">
+                <span id="lbl-nav-refresh"><i class="fa fa-refresh"></i>রিফ্রেশ অ্যাপ</span>
+            </button>
+        </div>
+
+    </div>
+
+    <div id="video-player-container">
+        <div class="player-header-bar">
+            <button class="player-back-btn" onclick="closeVideoPlayer()"><i class="fa fa-arrow-left"></i></button>
+            <div class="player-title-text" id="playing-video-title">Premium Room Content Processing...</div>
+            <button class="player-back-btn" onclick="openCommentPopup()" style="margin-right:0; margin-left:12px; background:rgba(130,87,229,0.3);"><i class="fa fa-comments"></i></button>
+        </div>
+        <div class="player-ad-wrapper-box top-ad-fixed" id="player-top-ad-wrapper"></div>
+        <div class="immersive-player-core-box">
+            <div class="player-iframe-embed-holder" id="player-iframe-area"></div>
+        </div>
+        <div class="player-ad-wrapper-box" id="player-bottom-ad-wrapper"></div>
+    </div>
+
+    <div class="bottom-sheet-modal-backdrop" id="global-wallet-modal" onclick="closeWalletPopupOutside(event)">
+        <div class="sheet-modal-surface-card">
+            <div class="sheet-modal-close-handle" onclick="closeWalletPopup()"></div>
+            <div class="sheet-modal-header-row">
+                <div class="sheet-modal-title" id="lbl-wallet-header">মাই আর্নিং ও উইথড্রাল হিস্টোরি</div>
+                <div style="font-size:12px; color:var(--danger); font-weight:bold; cursor:pointer;" onclick="handleLogout()"><i class="fa fa-sign-out-alt"></i> Logout</div>
+            </div>
+            <div class="sheet-modal-body-scrollable">
+                <div style="background:#0a0a0c; border:1px solid #1c1c24; border-radius:16px; padding:20px; text-align:center; margin-bottom:20px;">
+                    <div style="font-size:12px; color:var(--text-sub); text-transform:uppercase; margin-bottom:4px;" id="lbl-wallet-bal-title">মোট ব্যালেন্স</div>
+                    <div style="font-size:28px; font-weight:700; color:var(--success);" id="modal-wallet-balance">$0.00 USD</div>
+                    <div style="font-size:11px; color:#555; margin-top:6px;" id="lbl-wallet-method">LTC Litecoin (উইথড্র মেথড)</div>
+                </div>
+                <div class="form-input-group">
+                    <label id="lbl-wallet-addr-label">আপনার Litecoin (LTC) অ্যাড্রেস দিন:</label>
+                    <input type="text" class="form-text-input" id="wallet-ltc-address" placeholder="LTC Address লিখুন...">
+                </div>
+                <div class="form-input-group">
+                    <label id="lbl-wallet-amt-label">উইথড্র পরিমাণ (USD):</label>
+                    <input type="number" step="0.01" class="form-text-input" id="wallet-withdraw-amount" placeholder="Amount দিন...">
+                </div>
+                <button class="form-action-submit-btn" id="lbl-wallet-submit-btn" onclick="submitWithdrawRequest()">উইথড্র রিকোয়েস্ট পাঠান</button>
+                <div style="margin-top:24px; font-size:13.5px; font-weight:600; color:var(--text-main); margin-bottom:10px;" id="lbl-wallet-history-title">উইথড্রাল হিস্টোরি</div>
+                <div id="withdraw-history-container" style="font-size:12px; color:var(--text-sub); display:flex; flex-direction:column; gap:8px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-sheet-modal-backdrop" id="global-comment-modal" onclick="closeCommentPopupOutside(event)">
+        <div class="sheet-modal-surface-card">
+            <div class="sheet-modal-close-handle" onclick="closeCommentPopup()"></div>
+            <div class="sheet-modal-header-row">
+                <div class="sheet-modal-title" id="lbl-comment-header">পাবলিক লাইভ কমেন্ট জোন</div>
+                <div style="font-size:18px; color:var(--text-sub); cursor:pointer;" onclick="closeCommentPopup()">&times;</div>
+            </div>
+            <div class="sheet-modal-body-scrollable" id="popup-comment-list-container" style="margin-bottom:12px;"></div>
+            <div style="display:flex; gap:8px; background:#0a0a0c; padding:8px; border-radius:12px; border:1px solid #222; align-items:center;">
+                <input type="text" id="txt-user-comment" class="form-text-input" placeholder="আপনার কমেন্ট লিখুন..." style="flex:1; border:none; padding:10px; margin:0;" onkeydown="if(event.key==='Enter') submitNewComment()">
+                <button onclick="submitNewComment()" style="background:var(--gradient-primary); border:none; width:40px; height:40px; border-radius:10px; color:#fff; cursor:pointer; display:flex; justify-content:center; align-items:center;"><i class="fa fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-sheet-modal-backdrop" id="global-review-modal" onclick="if(event.target.id==='global-review-modal')this.style.display='none'">
+        <div class="sheet-modal-surface-card">
+            <div class="sheet-modal-close-handle" onclick="document.getElementById('global-review-modal').style.display='none'"></div>
+            <div class="sheet-modal-header-row">
+                <div class="sheet-modal-title">অ্যাপ রিভিউ ও রেটিং দিন</div>
+                <div style="font-size:18px; color:var(--text-sub); cursor:pointer;" onclick="document.getElementById('global-review-modal').style.display='none'">&times;</div>
+            </div>
+            <div class="sheet-modal-body-scrollable" style="text-align:center; padding:10px 0;">
+                <p style="font-size:13px; color:var(--text-sub);">আমাদের সার্ভিস উন্নত করতে আপনার মূল্যবান রেটিং স্টার দিন:</p>
+                <div class="rating-interactive-row" id="rating-star-row">
+                    <i class="fa fa-star" data-value="1" onclick="submitUserRating(1)"></i>
+                    <i class="fa fa-star" data-value="2" onclick="submitUserRating(2)"></i>
+                    <i class="fa fa-star" data-value="3" onclick="submitUserRating(3)"></i>
+                    <i class="fa fa-star" data-value="4" onclick="submitUserRating(4)"></i>
+                    <i class="fa fa-star" data-value="5" onclick="submitUserRating(5)"></i>
+                </div>
+                <button class="page-ctrl-btn" style="margin:0 auto; display:block;" onclick="document.getElementById('global-review-modal').style.display='none'">বন্ধ করুন</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="custom-alert-zone" onclick="closeCustomAlert()">
+        <div class="alert-card" onclick="event.stopPropagation()">
+            <i class="fa fa-exclamation-circle"></i>
+            <h3 id="lbl-alert-title">অ্যাকাউন্ট নোটিশ!</h3>
+            <p id="custom-alert-msg">...</p>
+            <button class="form-action-submit-btn" id="lbl-alert-btn" onclick="closeCustomAlert()" style="margin:0; padding:12px;">ঠিক আছে</button>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
+
+    <script>
+        const TELEGRAM_BOT_TOKEN = "8007497540:AAE-uhZOaclMNGLo4w4hNdC_aUh0XHagfjA"; 
+        const TELEGRAM_CHAT_ID = "-1003825211371";    
+
+        const firebaseConfig = { 
+            apiKey: "AIzaSyDImi_2Bv4zHce7uDtlRARHOli_N7_nihQ", 
+            projectId: "dating-app-ae0ea",
+            authDomain: "dating-app-ae0ea.firebaseapp.com"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        let globalAdCode = ""; 
+        let allVideos = [];
+        let filteredVideos = [];
+        
+        let currentPage = 1;
+        const itemsPerPage = 30;
+        
+        let userId = "";
+        let userEmail = "";
+        let userNameProfile = "";
+        let userAge = "";
+        let userGender = "";
+        let firstLoginTime = "";
+        let totalVideosWatched = 0;
+        let totalWatchDurationSeconds = 0;
+        let totalAdClicks = 0;
+        let totalGlobalUsers = 0; 
+        let currentVisitOrder = 1;
+        let userBalance = 0.00;
+        let isGoogleUser = false;
+        
+        let videoStartTime = null;
+        let currentWatchingVideoTitle = "";
+        let isBrowserExiting = false; 
+        let isInternalRedirect = false; 
+        
+        let activeReplyToCommentId = null; 
+        let totalLoadedCommentsCount = 0;
+        let lastSeenCommentsCount = parseInt(localStorage.getItem("last_seen_comments_count") || "0");
+        let isCommentPopupOpen = false;
+
+        let myFluidPlayer = null;
+
+        // Anti-Spam Click Tracker
+        let lastAdClickTime = 0; 
+        const CLICK_COOLDOWN_MS = 60000; // ১ মিনিট কুলডাউন পলিসি একই বিজ্ঞাপনে
+        let clickedAdTokens = new Set(); 
+        let currentActiveToken = ""; 
+
+        const languages = {
+            bn: {
+                appName: "Dating Earn Pro", premiumTag: "<i class='fa fa-circle' style='color: var(--success);'></i> প্রিমিয়াম লাইভ",
+                noticeBadge: "<i class='fa fa-bullhorn'></i> নোটিশ", statUid: "মাই আইডি / ইমেইল", statWallet: "মাই ওয়ালেট",
+                statWatched: "রুম ওয়াচ", statClicks: "অ্যাড ক্লিক", cardReview: "<i class='fa fa-star'></i> লাইভ রিভিউ",
+                cardComment: "লাইভ কমেন্ট", cardTelegram: "টেলিগ্রাম", cardTelegramSub: "গ্রুপে জয়েন",
+                sectionTitle: "<i class='fa fa-video'></i> প্রিমিয়াম লাইভ ভিডিও রুম", btnPrev: "পূর্ববর্তী", btnNext: "পরবর্তী",
+                navHome: "<i class='fa fa-home'></i>হোমপেজ", navRefresh: "<i class='fa fa-refresh'></i>রিফ্রেশ অ্যাপ",
+                walletHeader: "মাই আর্নিং ও উইথড্রাল হিস্টোরি", walletBalTitle: "মোট ব্যালেন্স", walletMethod: "LTC Litecoin (উইথড্র মেথড)",
+                walletAddrLabel: "আপনার Litecoin (LTC) অ্যাড্রেস দিন:", walletAddrPlh: "LTC Address লিখুন...",
+                walletAmtLabel: "উইথড্র পরিমাণ (USD):", walletAmtPlh: "Amount দিন...", walletSubmitBtn: "উইথড্র রিকোয়েস্ট পাঠান",
+                walletHistoryTitle: "উইথড্রাল হিস্টোরি", commentHeader: "পাবলিক লাইভ কমেন্ট জোন", commentPlh: "আপনার কমেন্ট লিখুন...",
+                alertTitle: "অ্যাকাউন্ট নোটিশ!", alertBtn: "ঠিক আছে", allRooms: "সব রুম", freeRoom: "Free Room", justUploaded: "সদ্য আপলোড",
+                noHistory: "কোনো হিস্টোরি পাওয়া যায়নি।", noComments: "কোনো পাবলিক কমেন্ট নেই! প্রথম কমেন্টটি আপনি করুন।",
+                noVideos: "কোনো ভিডিও রুম পাওয়া যায়নি।", pageLabel: "পেজ: ", replyText: "উত্তর দিন", loading: "লোড হচ্ছে...",
+                alertGoogleSignup: "অ্যাকাউন্ট সাইন আপ বা লগইন ছাড়া প্যানেলে প্রবেশ করা সম্ভব নয়। দয়া করে অ্যাকাউন্ট তৈরি করুন!",
+                legalFooter: `<h4><i class="fa fa-gavel"></i> ১৮+ নিয়মাবলী ও শর্তাবলী (Terms of Service)</h4>
+                <p>১. এই প্যানেলটি সম্পূর্ণভাবে ১৮ বছর বা তার বেশি বয়সী প্রাপ্তবয়স্ক ব্যবহারকারীদের বিনোদন এবং আয়ের উদ্দেশ্যে তৈরি করা হয়েছে। ১৮ বছরের নিচে কেউ এটি ব্যবহার করলে কর্তৃপক্ষ কোনোভাবেই dায়ী থাকবে না।</p>
+                <p>২. ব্যবহারকারীকে অবশ্যই অ্যাকাউন্টের সম্পূর্ণ সত্যতা বজায় রাখতে হবে। স্বয়ংক্রিয় বা কৃত্রিম রোবট দ্বারা স্প্যামিং বা অবৈধ উপায়ে কোনো বিজ্ঞাপনে ক্লিক করার চেষ্টা করা হলে সেই ব্যবহারকারীর ব্যালেন্স বাজেয়াপ্ত এবং অ্যাকাউন্ট চিরতরে ব্যান করা হবে।</p>
+                <p>৩. ডেটিং লাইভ ভিডিও রুমের সমস্ত কনটেন্ট থার্ড-পার্টি ও প্রিমিয়াম স্ট্রিমিং সার্ভার দ্বারা নিয়ন্ত্রিত। ভিডিওের মূল বিষয়বস্তুর ওপর অ্যাপ কর্তৃপক্ষের নিজস্ব কোনো দায়বদ্ধতা নেই।</p>
+                <p>৪. পেমেন্ট ভেরিফিকেশন সিস্টেম সম্পূর্ণভাবে অ্যাকাউন্ট ট্র্যাকিং ডেটার ওপর নির্ভরশীল। অ্যাকাউন্ট সুরক্ষিত না থাকলে পেমেন্ট উইথড্র রিকোয়েস্ট রিজেক্ট করা হতে পারে।</p>`
+            },
+            en: {
+                appName: "Dating Earn Pro", premiumTag: "<i class='fa fa-circle' style='color: var(--success);'></i> Premium Live",
+                noticeBadge: "<i class='fa fa-bullhorn'></i> Notice", statUid: "My ID / Email", statWallet: "My Wallet",
+                statWatched: "Room Watched", statClicks: "Ad Clicks", cardReview: "<i class='fa fa-star'></i> Live Review",
+                cardComment: "Live Comment", cardTelegram: "Telegram", cardTelegramSub: "Join Group",
+                sectionTitle: "<i class='fa fa-video'></i> Premium Live Video Rooms", btnPrev: "Previous", btnNext: "Next",
+                navHome: "<i class='fa fa-home'></i>Homepage", navRefresh: "<i class='fa fa-refresh'></i>Refresh App",
+                walletHeader: "My Earnings & Withdrawal History", walletBalTitle: "Total Balance", walletMethod: "LTC Litecoin (Withdraw Method)",
+                walletAddrLabel: "Enter your Litecoin (LTC) Address:", walletAddrPlh: "Enter LTC Address...",
+                walletAmtLabel: "Withdraw Amount (USD):", walletAmtPlh: "Enter Amount...", walletSubmitBtn: "Send Withdraw Request",
+                walletHistoryTitle: "Withdrawal History", commentHeader: "Public Live Comment Zone", commentPlh: "Write your comment...",
+                alertTitle: "Account Notice!", alertBtn: "OK", allRooms: "All Rooms", freeRoom: "Free Room", justUploaded: "Just Uploaded",
+                noVideos: "No video rooms found.", pageLabel: "Page: ", replyText: "Reply", loading: "Loading...",
+                alertGoogleSignup: "Access is denied without custom manual signup or Google Authentication. Please create an account!",
+                legalFooter: `<h4><i class="fa fa-gavel"></i> 18+ Terms of Service & Disclaimer</h4>
+                <p>1. This panel is strictly designed for individuals aged 18 or older. The administration holds absolutely no responsibility or liability for unauthorized access by minors.</p>
+                <p>2. Users must maintain genuine interaction. Any suspicious, automated, or simulated bot traffic/ad clicks intended to manipulate earnings will result in immediate termination of the account and loss of accumulated balance.</p>
+                <p>3. All premium live streams are hosted by third-party streaming channels. The platform is not responsible for any graphical content streamed inside the rooms.</p>
+                <p>4. Secure payment settlements via LTC require mandatory verified Google Sign-up or Custom Account info. Unverified guest accounts will not be eligible for high-tier withdrawal approvals.</p>`
+            }
+        };
+
+        function formatWatchTime(seconds) {
+            if (!seconds || seconds <= 0) return "0s";
+            let h = Math.floor(seconds / 3600);
+            let m = Math.floor((seconds % 3600) / 60);
+            let s = seconds % 60;
+            if (h > 0) return `${h}h ${m}m`;
+            if (m > 0) return `${m}m ${s}s`;
+            return `${s}s`;
+        }
+
+        function updateWatchDisplay() {
+            let labelSuffix = localStorage.getItem("app_lang") === "en" ? " rooms" : " টি";
+            document.getElementById('lbl-panel-watched').innerHTML = `${totalVideosWatched}${labelSuffix}<br><span style="color:#ff007f; font-size:10px; font-weight:600;"><i class="fa fa-clock"></i> ${formatWatchTime(totalWatchDurationSeconds)}</span>`;
+        }
+
+        function changeLanguage(lang) {
+            localStorage.setItem("app_lang", lang);
+            document.getElementById("lang-switcher").value = lang;
+            const l = languages[lang];
+            document.getElementById("lbl-app-name").innerHTML = l.appName;
+            document.getElementById("lbl-premium-tag").innerHTML = l.premiumTag;
+            document.getElementById("lbl-notice-badge").innerHTML = l.noticeBadge;
+            document.getElementById("lbl-stat-uid").innerText = l.statUid;
+            document.getElementById("lbl-stat-wallet").innerText = l.statWallet;
+            document.getElementById("lbl-stat-watched").innerText = l.statWatched;
+            document.getElementById("lbl-stat-clicks").innerText = l.statClicks;
+            document.getElementById("lbl-card-review").innerHTML = l.cardReview;
+            document.getElementById("lbl-card-comment").innerText = l.cardComment;
+            document.getElementById("lbl-card-telegram").innerText = l.cardTelegram;
+            document.getElementById("lbl-card-telegram-sub").innerText = l.cardTelegramSub;
+            document.getElementById("lbl-section-title").innerHTML = l.sectionTitle;
+            document.getElementById("lbl-btn-prev").innerText = l.btnPrev;
+            document.getElementById("lbl-btn-next").innerText = l.btnNext;
+            document.getElementById("lbl-nav-home").innerHTML = `<i class='fa fa-home'></i>` + l.navHome;
+            document.getElementById("lbl-nav-refresh").innerHTML = `<i class='fa fa-refresh'></i>` + l.navRefresh;
+            document.getElementById("lbl-wallet-header").innerText = l.walletHeader;
+            document.getElementById("lbl-wallet-bal-title").innerText = l.walletBalTitle;
+            document.getElementById("lbl-wallet-method").innerText = l.walletMethod;
+            document.getElementById("lbl-wallet-addr-label").innerText = l.walletAddrLabel;
+            document.getElementById("wallet-ltc-address").placeholder = l.walletAddrPlh;
+            document.getElementById("lbl-wallet-amt-label").innerText = l.walletAmtLabel;
+            document.getElementById("wallet-withdraw-amount").placeholder = l.walletAmtPlh;
+            document.getElementById("lbl-wallet-submit-btn").innerText = l.walletSubmitBtn;
+            document.getElementById("lbl-wallet-history-title").innerText = l.walletHistoryTitle;
+            document.getElementById("lbl-comment-header").innerText = l.commentHeader;
+            document.getElementById("txt-user-comment").placeholder = l.commentPlh;
+            document.getElementById("lbl-alert-title").innerText = l.alertTitle;
+            document.getElementById("lbl-alert-btn").innerText = l.alertBtn;
+            document.getElementById("legal-footer-area").innerHTML = l.legalFooter;
+            let catAllBtn = document.getElementById("cat-all");
+            if(catAllBtn) catAllBtn.innerText = l.allRooms;
+            updatePaginationControls();
+            displayVideosPage();
+            updateWatchDisplay();
+        }
+
+        function showCustomAlert(msg) {
+            document.getElementById('custom-alert-msg').innerText = msg;
+            document.getElementById('custom-alert-zone').style.display = 'flex';
+        }
+        function closeCustomAlert() {
+            document.getElementById('custom-alert-zone').style.display = 'none';
+        }
+
+        window.onload = function() {
+            let savedLang = localStorage.getItem("app_lang") || "bn";
+            changeLanguage(savedLang);
+            if(!sessionStorage.getItem("tr_login_time")) {
+                sessionStorage.setItem("tr_login_time", new Date().toLocaleString('en-US'));
+            }
+            firstLoginTime = sessionStorage.getItem("tr_login_time");
+
+            auth.getRedirectResult().then((result) => {
+                if (result.user) {
+                    userEmail = result.user.email || "Google User";
+                    userId = result.user.uid;
+                    userNameProfile = result.user.displayName || "Google Auth User";
+                    localStorage.setItem("tr_user_email", userEmail);
+                    localStorage.setItem("tr_user_id", userId);
+                    localStorage.setItem("tr_user_username", userNameProfile);
+                    localStorage.setItem("is_google_user", "true");
+                    
+                    document.getElementById('verification-overlay').style.display = 'none';
+                    document.getElementById('main-app').style.display = 'block';
+                    processGoogleSession();
+                } else {
+                    if (localStorage.getItem("tr_user_id")) {
+                        userId = localStorage.getItem("tr_user_id");
+                        userEmail = localStorage.getItem("tr_user_email") || "";
+                        userNameProfile = localStorage.getItem("tr_user_username") || "User";
+                        isGoogleUser = localStorage.getItem("is_google_user") === "true";
+                        
+                        document.getElementById('verification-overlay').style.display = 'none';
+                        document.getElementById('main-app').style.display = 'block';
+                        
+                        if(isGoogleUser) {
+                            processGoogleSession();
+                        } else {
+                            processUserSession(userId, false);
+                        }
+                    } else {
+                        document.getElementById('verification-overlay').style.display = 'flex';
+                    }
+                }
+            }).catch((error) => {
+                console.error("Redirect Error: ", error);
+                if (localStorage.getItem("tr_user_id")) {
+                    userId = localStorage.getItem("tr_user_id");
+                    document.getElementById('verification-overlay').style.display = 'none';
+                    document.getElementById('main-app').style.display = 'block';
+                    processUserSession(userId, false);
+                }
+            });
+        };
+
+        window.history.pushState(null, null, window.location.href);
+        window.onpopstate = function() {
+            window.history.pushState(null, null, window.location.href);
+            if (sessionStorage.getItem("is_player_open") === "true") {
+                document.getElementById('main-app').style.display = 'none';
+                document.getElementById('video-player-container').style.display = 'flex';
+            }
+        };
+
+        function sendOrUpdateTelegramReport(isOfflineStatus = false) {
+            if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID || !userId) return;
+            if (isOfflineStatus && !isBrowserExiting) return; 
+
+            let durationText = "";
+            if (totalWatchDurationSeconds >= 60) {
+                durationText = `${Math.floor(totalWatchDurationSeconds / 60)} Min ${totalWatchDurationSeconds % 60} Sec`;
+            } else {
+                durationText = `${totalWatchDurationSeconds} SECOND`;
+            }
+
+            let statusHeader = isOfflineStatus ? "🔴 *ইউজার অফলাইন রিপোর্ট (ডিভাইস লেфт)*" : "📱 *ইউজার লাইভ ট্র্যাকিং রিপোর্ট*";
+            let statusFooter = isOfflineStatus ? "❌ _স্ট্যাটাস: ইউজার সাইট বন্ধ করে চলে গেছে!_" : "🔄 _স্ট্যাটাস: ইউজার eastbound সাইটে অ্যাক্টিভ আছে..._";
+            let accountType = isGoogleUser ? "গুগল সাইন-আপ (সাধারণ ইউজার)" : "ম্যানুয়াল প্রিমিয়াম অ্যাকাউন্ট";
+
+            const messageText = `${statusHeader}\n━━━━━━━━━━━━━━━━━━\n👥 মোট ইউজার: *${totalGlobalUsers} জন*\n👤 ইউজারনেম: *${userNameProfile}*\n📧 জিমেইল: *${userEmail}*\n🆔 আইডি: \`${userId}\`\n🛡️ টাইপ: ${accountType}\n💰 ব্যালেন্স: *$${userBalance.toFixed(4)} USD*\n⏰ প্রবেশের সময়: ${firstLoginTime}\n\n🎬 *ভিдео দেখার হিসাব:*\n• মোট ভিডিও দেখেছে: *${totalVideosWatched} টি*\n• মোট দেখার সময়: *${durationText}*\n\n⚠️ *বিজ্ঞাপনের হিসাব:*\n• মোট বিজ্ঞাপনে ক্লিক: *${totalAdClicks} বার*\n\n${statusFooter}`;
+
+            const savedMsgId = sessionStorage.getItem("telegram_msg_id");
+            const url = isOfflineStatus ? `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage` : (savedMsgId ? `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/editMessageText` : `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`);
+            
+            let payload = { chat_id: TELEGRAM_CHAT_ID, text: messageText, parse_mode: "Markdown" };
+            if (!isOfflineStatus && savedMsgId) { payload.message_id = parseInt(savedMsgId); }
+
+            if (isOfflineStatus) {
+                fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload), keepalive: true });
+                sessionStorage.removeItem("telegram_msg_id");
+            } else {
+                fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.ok && data.result && !savedMsgId) { sessionStorage.setItem("telegram_msg_id", data.result.message_id); }
+                }).catch(err => console.error(err));
+            }
+        }
+
+        function handleOfflineBehavior() {
+            if (videoStartTime && !isGoogleUser) {
+                const videoEndTime = new Date();
+                const diff = Math.round((videoEndTime - videoStartTime) / 1000);
+                totalWatchDurationSeconds += diff;
+                sessionStorage.setItem("tr_total_duration", totalWatchDurationSeconds);
+                
+                db.collection("user_profile").doc(userId).update({
+                    watch_duration: firebase.firestore.FieldValue.increment(diff)
+                }).catch(e => console.log(e));
+            }
+            sendOrUpdateTelegramReport(true);
+        }
+
+        window.addEventListener('beforeunload', function () { if (!isInternalRedirect) { isBrowserExiting = true; handleOfflineBehavior(); } });
+        window.addEventListener('pagehide', function() { if (!isInternalRedirect) { isBrowserExiting = true; handleOfflineBehavior(); } });
+
+        function acceptTerms() {
+            document.getElementById('terms-box').style.display = 'none';
+            document.getElementById('age-box').style.display = 'block';
+        }
+
+        function showAuthSelection() {
+            document.getElementById('age-box').style.display = 'none';
+            document.getElementById('google-box').style.display = 'block';
+        }
+
+        function switchManualForm(type) {
+            if(type === 'reg') {
+                document.getElementById('tab-toggle-reg').classList.add('active');
+                document.getElementById('tab-toggle-login').classList.remove('active');
+                document.getElementById('manual-reg-section').style.display = 'block';
+                document.getElementById('manual-login-section').style.display = 'none';
+            } else {
+                document.getElementById('tab-toggle-reg').classList.remove('active');
+                document.getElementById('tab-toggle-login').classList.add('active');
+                document.getElementById('manual-reg-section').style.display = 'none';
+                document.getElementById('manual-login-section').style.display = 'block';
+            }
+        }
+
+        function handleManualRegister() {
+            const username = document.getElementById('m-reg-username').value.trim();
+            const email = document.getElementById('m-reg-email').value.trim();
+            const age = document.getElementById('m-reg-age').value.trim();
+            const gender = document.getElementById('m-reg-gender').value;
+            const pass = document.getElementById('m-reg-pass').value;
+            const passConf = document.getElementById('m-reg-pass-conf').value;
+
+            if(!username || !email || !age || !gender || !pass || !passConf) {
+                alert("সবগুলো ঘর সঠিকভাবে পূরণ করুন!"); return;
+            }
+            if(pass !== passConf) {
+                alert("পাসওয়ার্ড এবং কনফার্ম পাসওয়ার্ড মেলেনি!"); return;
+            }
+            if(parseInt(age) < 18) {
+                alert("দুঃখিত, এই প্যানেলটি ব্যবহারের জন্য আপনার বয়স সর্বনিম্ন ১৮ বছর হতে হবে।"); return;
+            }
+
+            db.collection("user_profile").where("email", "==", email).get().then((snap) => {
+                if(!snap.empty) {
+                    alert("এই জিমেইল আইডি দিয়ে ইতিমধ্যে একটি অ্যাকাউন্ট তৈরি করা আছে!");
+                } else {
+                    const newUid = "UID-" + Math.floor(100000 + Math.random() * 900000);
+                    userId = newUid;
+                    userEmail = email;
+                    userNameProfile = username;
+                    userAge = age;
+                    userGender = gender;
+                    isGoogleUser = false;
+
+                    localStorage.setItem("tr_user_id", userId);
+                    localStorage.setItem("tr_user_email", userEmail);
+                    localStorage.setItem("tr_user_username", userNameProfile);
+                    localStorage.setItem("is_google_user", "false");
+
+                    document.getElementById('verification-overlay').style.display = 'none';
+                    document.getElementById('main-app').style.display = 'block';
+                    
+                    processUserSession(userId, true, pass);
+                }
+            }).catch(e => { alert("রেজিস্ট্রেশন ব্যর্থ হয়েছে!"); console.error(e); });
+        }
+
+        function handleManualLogin() {
+            const email = document.getElementById('m-login-email').value.trim();
+            const pass = document.getElementById('m-login-pass').value;
+
+            if(!email || !pass) {
+                alert("জিমেইল এবং পাসওয়ার্ড দিন!"); return;
+            }
+
+            db.collection("user_profile").where("email", "==", email).where("pass", "==", pass).get().then((snap) => {
+                if(snap.empty) {
+                    alert("ভুল জিমেইল অথবা পাসওয়ার্ড! আবার চেষ্টা করুন।");
+                } else {
+                    let doc = snap.docs[0];
+                    let dData = doc.data();
+                    
+                    userId = doc.id;
+                    userEmail = dData.email;
+                    userNameProfile = dData.username || "User";
+                    isGoogleUser = false;
+
+                    localStorage.setItem("tr_user_id", userId);
+                    localStorage.setItem("tr_user_email", userEmail);
+                    localStorage.setItem("tr_user_username", userNameProfile);
+                    localStorage.setItem("is_google_user", "false");
+
+                    document.getElementById('verification-overlay').style.display = 'none';
+                    document.getElementById('main-app').style.display = 'block';
+                    
+                    processUserSession(userId, false, pass);
+                }
+            }).catch(e => alert("লগইন ব্যর্থ হয়েছে!"));
+        }
+
+        function handleGoogleSignIn() {
+            isInternalRedirect = true;
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithRedirect(provider);
+        }
+
+        function handleLogout() {
+            auth.signOut().then(() => {
+                localStorage.removeItem("tr_user_id"); localStorage.removeItem("tr_user_email");
+                localStorage.removeItem("tr_user_username"); localStorage.removeItem("is_google_user");
+                sessionStorage.clear(); window.location.reload();
+            });
+        }
+
+        function processGoogleSession() {
+            userBalance = parseFloat(sessionStorage.getItem("g_bal") || "0.00");
+            totalVideosWatched = parseInt(sessionStorage.getItem("tr_total_videos") || "0");
+            totalWatchDurationSeconds = parseInt(sessionStorage.getItem("tr_total_duration") || "0");
+            totalAdClicks = parseInt(sessionStorage.getItem("tr_total_ads") || "0");
+
+            document.getElementById('lbl-panel-uid').innerHTML = `<span style='color:#00f2fe; font-weight:600;'>${userNameProfile}</span><br><span style='color:#777; font-size:10px;'>${userEmail}</span>`;
+            document.getElementById('lbl-panel-earnings').innerText = `$${userBalance.toFixed(4)} USD`;
+            document.getElementById('modal-wallet-balance').innerText = `$${userBalance.toFixed(4)} USD`;
+            document.getElementById('lbl-panel-clicks').innerText = totalAdClicks + (localStorage.getItem("app_lang") === "en" ? " times" : " বার");
+            
+            updateWatchDisplay();
+            initApp();
+            sendOrUpdateTelegramReport();
+        }
+
+        // ম্যানুয়াল ইউজার প্রোসেস সেশন (কালেকশনের নাম user_profile করা হলো)
+        function processUserSession(targetUid, isNew, plaintextPass = "") {
+            totalVideosWatched = parseInt(sessionStorage.getItem("tr_total_videos") || "0");
+            totalWatchDurationSeconds = parseInt(sessionStorage.getItem("tr_total_duration") || "0");
+            totalAdClicks = parseInt(sessionStorage.getItem("tr_total_ads") || "0");
+            
+            const counterRef = db.collection("settings").doc("user_counter");
+            const profileRef = db.collection("user_profile").doc(targetUid); // Fixed collection name
+
+            db.runTransaction((transaction) => {
+                return transaction.get(counterRef).then((sfDoc) => {
+                    return transaction.get(profileRef).then((pDoc) => {
+                        let globalCount = sfDoc.exists ? (sfDoc.data().count || 0) : 0;
+                        let visitOrder = 1;
+                        let alreadyCounted = sessionStorage.getItem("visit_counted") === "true";
+
+                        if (pDoc.exists) {
+                            let d = pDoc.data();
+                            visitOrder = d.visits || 1;
+                            userBalance = d.balance || 0.00;
+                            totalVideosWatched = d.videos_watched || totalVideosWatched;
+                            totalWatchDurationSeconds = d.watch_duration || totalWatchDurationSeconds;
+                            totalAdClicks = d.ad_clicks || totalAdClicks;
+                            userNameProfile = d.username || userNameProfile;
+                            userEmail = d.email || userEmail;
+                            
+                            sessionStorage.setItem("tr_total_videos", totalVideosWatched);
+                            sessionStorage.setItem("tr_total_duration", totalWatchDurationSeconds);
+                            sessionStorage.setItem("tr_total_ads", totalAdClicks);
+
+                            if(!alreadyCounted) {
+                                visitOrder += 1;
+                                transaction.update(profileRef, { visits: visitOrder, last_seen: new Date() });
+                            }
+                        } else {
+                            if (isNew) { globalCount += 1; }
+                            transaction.set(counterRef, { count: globalCount });
+                            transaction.set(profileRef, { 
+                                visits: 1, username: userNameProfile, email: userEmail, age: userAge, gender: userGender, pass: plaintextPass, balance: 0.00, videos_watched: 0, watch_duration: 0, ad_clicks: 0, created_at: new Date(), last_seen: new Date() 
+                            });
+                            userBalance = 0.00;
+                        }
+                        return { globalCount, visitOrder };
+                    });
+                });
+            }).then((res) => {
+                totalGlobalUsers = res.globalCount; currentVisitOrder = res.visitOrder;
+                sessionStorage.setItem("visit_counted", "true");
+                
+                db.collection("user_profile").doc(targetUid).onSnapshot(doc => { // Fixed collection name
+                    if (doc.exists) {
+                        let dData = doc.data();
+                        userBalance = dData.balance || 0.00;
+                        totalVideosWatched = dData.videos_watched || 0;
+                        totalWatchDurationSeconds = dData.watch_duration || 0;
+                        totalAdClicks = dData.ad_clicks || 0;
+                        
+                        document.getElementById('lbl-panel-uid').innerHTML = `<span style='color:#ff007f; font-weight:600;'>${dData.username || userNameProfile}</span><br><span style='color:#00f2fe; font-size:10px;'>${dData.email}</span>`;
+                        document.getElementById('lbl-panel-earnings').innerText = `$${userBalance.toFixed(4)} USD`;
+                        document.getElementById('modal-wallet-balance').innerText = `$${userBalance.toFixed(4)} USD`;
+                        document.getElementById('lbl-panel-clicks').innerText = totalAdClicks + (localStorage.getItem("app_lang") === "en" ? " times" : " বার");
+                        
+                        updateWatchDisplay();
+                    }
+                });
+                initApp(); sendOrUpdateTelegramReport(); 
+            }).catch((err) => { 
+                console.error("Transaction failed: ", err); 
+                initApp(); 
+            });
+        }
+
+        function initApp() {
+            loadGlobalSettings(); loadCategories(); loadVideosList();
+            setupAdClickTracker(); listenGlobalRatings(); listenGlobalComments(); loadWithdrawHistory();
+        }
+
+        function accessDenied() { window.location.href = "https://www.google.com"; }
+
+        function setupAdClickTracker() {
+            window.removeEventListener('blur', onWindowBlurHandler);
+            window.addEventListener('blur', onWindowBlurHandler);
+        }
+
+        function onWindowBlurHandler() {
+            const activeEl = document.activeElement;
+            if (activeEl && (activeEl.tagName === 'IFRAME' || activeEl.tagName === 'VIDEO')) {
+                const adSelectors = ['#top-cover-ad-wrapper', '#middle-ad-wrapper', '#home-bottom-ad-wrapper', '#player-top-ad-wrapper', '#player-bottom-ad-wrapper'];
+                let associatedSlotId = null;
+
+                adSelectors.forEach(sel => {
+                    let zone = document.querySelector(sel);
+                    if (zone && zone.contains(activeEl)) { associatedSlotId = sel; }
+                });
+
+                if (activeEl.closest && activeEl.closest('.fluid_video_wrapper')) { associatedSlotId = "#fluid-video-ad"; }
+
+                if (associatedSlotId) {
+                    let currentAdZoneNode = document.querySelector(associatedSlotId);
+                    let activeAdToken = currentAdZoneNode ? currentAdZoneNode.getAttribute('data-ad-token') : "fluid-ad";
+                    executeAdClickReward(activeAdToken);
+                    setTimeout(() => { window.focus(); }, 1000);
+                }
+            }
+        }
+
+        function executeAdClickReward(adToken) {
+            const currentTime = Date.now();
+
+            if (currentTime - lastAdClickTime < CLICK_COOLDOWN_MS && currentActiveToken === adToken) {
+                console.log("Anti-Spam: Click blocked! Same banner click requires a 1 minute cooldown limit.");
+                return; 
+            }
+
+            lastAdClickTime = currentTime;
+            currentActiveToken = adToken;
+
+            totalAdClicks++;
+            sessionStorage.setItem("tr_total_ads", totalAdClicks);
+            
+            let addedEarn = 0.0005; 
+            userBalance += addedEarn;
+            
+            document.getElementById('lbl-panel-clicks').innerText = totalAdClicks + (localStorage.getItem("app_lang") === "en" ? " times" : " বার");
+            document.getElementById('lbl-panel-earnings').innerText = `$${userBalance.toFixed(4)} USD`;
+            document.getElementById('modal-wallet-balance').innerText = `$${userBalance.toFixed(4)} USD`;
+            
+            if(isGoogleUser) {
+                sessionStorage.setItem("g_bal", userBalance);
+                sendOrUpdateTelegramReport();
+            } else {
+                db.collection("user_profile").doc(userId).update({
+                    balance: firebase.firestore.FieldValue.increment(addedEarn),
+                    ad_clicks: firebase.firestore.FieldValue.increment(1)
+                }).then(() => {
+                    sendOrUpdateTelegramReport();
+                }).catch(err => console.error("Earn Update Failed:", err));
+            }
+        }
+
+        function renderAdCode(elementId, codeOrUrl) {
+            const container = document.getElementById(elementId);
+            if (!container || !codeOrUrl) return;
+            container.innerHTML = "";
+
+            let uniqueToken = "TOKEN-" + Math.random().toString(36).substring(2, 11).toUpperCase() + "-" + Date.now();
+            container.setAttribute('data-ad-token', uniqueToken);
+
+            let contentHtml = "";
+            if (codeOrUrl.startsWith("http://") || codeOrUrl.startsWith("https://")) {
+                if (codeOrUrl.match(/\.(mp4|webm|ogg)$/i)) {
+                    contentHtml = `<video src="${codeOrUrl}" autoplay muted loop playsinline style="width:100% !important; height:100%; object-fit:contain; display:block;"></video>`;
+                } else if (codeOrUrl.match(/\.(jpeg|jpg|gif|png|webp)$/i)) {
+                    contentHtml = `<img src="${codeOrUrl}" style="width:100% !important; height:100%; object-fit:contain; display:block;">`;
+                } else {
+                    contentHtml = `<iframe src="${codeOrUrl}" autoplay muted loop style="width:100% !important; height:100%; border:none; margin:0; padding:0; display:block;"></iframe>`;
+                }
+            } else {
+                contentHtml = `<iframe srcdoc="<!DOCTYPE html><html><body style='margin:0;padding:0;display:flex;justify-content:center;align-items:center;'><div>${codeOrUrl.replace(/"/g, '&quot;')}</div></body></html>" style="width:100%; height:100%; border:none; display:block;"></iframe>`;
+            }
+
+            container.innerHTML = contentHtml;
+        }
+
+        function openWalletPopup() { document.getElementById('global-wallet-modal').style.display = 'flex'; }
+        function closeWalletPopup() { document.getElementById('global-wallet-modal').style.display = 'none'; }
+        function closeWalletPopupOutside(e) { if (e.target.id === "global-wallet-modal") closeWalletPopup(); }
+
+        function submitWithdrawRequest() {
+            const address = document.getElementById('wallet-ltc-address').value.trim();
+            const amount = parseFloat(document.getElementById('wallet-withdraw-amount').value.trim());
+            
+            if (!address || isNaN(amount) || amount <= 0) {
+                alert(localStorage.getItem("app_lang") === "en" ? "Enter correct address and amount!" : "সঠিক অ্যাড্রেস এবং পরিমাণ দিন!"); return;
+            }
+            if (amount > userBalance) {
+                alert(localStorage.getItem("app_lang") === "en" ? "Insufficient wallet balance!" : "আপনার ওয়ালেটে পর্যাপ্ত ব্যালেন্স নেই!"); return;
+            }
+
+            userBalance -= amount;
+            document.getElementById('lbl-panel-earnings').innerText = `$${userBalance.toFixed(4)} USD`;
+            document.getElementById('modal-wallet-balance').innerText = `$${userBalance.toFixed(4)} USD`;
+
+            if(isGoogleUser) {
+                sessionStorage.setItem("g_bal", userBalance);
+                triggerTelegramWithdrawReport(address, amount);
+                alert("উইথড্র রিকোয়েস্ট সফলভাবে পাঠানো হয়েছে!");
+                document.getElementById('wallet-ltc-address').value = ""; document.getElementById('wallet-withdraw-amount').value = "";
+            } else {
+                db.collection("user_profile").doc(userId).update({ balance: firebase.firestore.FieldValue.increment(-amount) }).then(() => {
+                    return db.collection("withdraws").add({
+                        user_id: userId, username: userNameProfile, email: userEmail, ltc_address: address, amount_usd: amount, status: "Pending", timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }).then(() => {
+                    alert(localStorage.getItem("app_lang") === "en" ? "Withdraw request submitted successfully!" : "উইথড্র রিকোয়েস্ট সফলভাবে পাঠানো হয়েছে!");
+                    document.getElementById('wallet-ltc-address').value = ""; document.getElementById('wallet-withdraw-amount').value = "";
+                    triggerTelegramWithdrawReport(address, amount);
+                }).catch(err => { 
+                    console.error(err); 
+                    userBalance += amount;
+                    db.collection("user_profile").doc(userId).update({ balance: userBalance });
+                    alert("উইথড্র সাবমিট ব্যর্থ হয়েছে!"); 
+                });
+            }
+        }
+
+        function triggerTelegramWithdrawReport(address, amount) {
+            if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
+                const msg = `💰 *নতুন উইথড্রাল রিকোয়েস্ট*\n━━━━━━━━━━━━━━━━━━\n👤 ইউজারনেম: *${userNameProfile}*\n📧 ஜিমেইল: *${userEmail}*\n🆔 ইউজার আইডি: \`${userId}\`\n🪙 LTC Address: \`${address}\`\n💵 পরিমাণ: *$${amount.toFixed(2)} USD*\n⏳ স্ট্যাটাস: *Pending*\n⚠️ _নোট: অ্যাডমিন এক্সেপ্ট না করলে রিফান্ড ব্যাক অপশন ভেরিফাইড আছে।_`;
+                fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: msg, parse_mode: "Markdown" })
+                });
+            }
+        }
+
+        function loadWithdrawHistory() {
+            if(isGoogleUser) {
+                document.getElementById('withdraw-history-container').innerHTML = "গুগল সাইন-আপ একাউন্টে লোকাল হিস্টোরি স্টোর হয় না।";
+                return;
+            }
+            db.collection("withdraws").where("user_id", "==", userId).orderBy("timestamp", "desc").onSnapshot(snap => {
+                const container = document.getElementById('withdraw-history-container');
+                let currentLang = localStorage.getItem("app_lang") || "bn";
+                container.innerHTML = "";
+                if(snap.empty) { container.innerHTML = languages[currentLang].noHistory; return; }
+                snap.forEach(doc => {
+                    const data = doc.data();
+                    let dateStr = data.timestamp ? data.timestamp.toDate().toLocaleDateString() : "Just Now";
+                    container.innerHTML += `<div style="border-bottom:1px solid #333; padding:6px 0;">
+                        <b>${dateStr}</b> - $${data.amount_usd.toFixed(2)} USD [${data.status}]<br>
+                        <span style="color:#777; font-size:10px;">LTC: ${data.ltc_address}</span>
+                    </div>`;
+                });
+            });
+        }
+
+        function loadGlobalSettings() {
+            db.collection("settings").doc("app_info").onSnapshot(doc => {
+                if(doc.exists) {
+                    const data = doc.data();
+                    let topAdCode = data.ad_top_code || data.ad_code || data.direct_ad_url || "";
+                    let middleAdCode = data.ad_middle_code || data.ad_code || data.direct_ad_url || "";
+                    let bottomAdCode = data.ad_bottom_code || data.ad_code || data.direct_ad_url || "";
+                    
+                    globalAdCode = topAdCode; 
+                    document.getElementById('app-notice-text').innerText = data.admin_rule || (localStorage.getItem("app_lang") === "en" ? "Welcome to our live room!" : "আমাদের লাইভ রুমে স্বাগত!");
+                    
+                    if(topAdCode !== "") { renderAdCode('top-cover-ad-wrapper', topAdCode); }
+                    if(middleAdCode !== "") { renderAdCode('middle-ad-wrapper', middleAdCode); }
+                    if(bottomAdCode !== "") { renderAdCode('home-bottom-ad-wrapper', bottomAdCode); }
+                    setTimeout(setupAdClickTracker, 800);
+                }
+            });
+        }
+
+        function loadCategories() {
+            db.collection("app_categories").onSnapshot(snap => {
+                const container = document.getElementById('category-list-wrapper');
+                let currentLang = localStorage.getItem("app_lang") || "bn";
+                container.innerHTML = `<button class="cat-btn active" id="cat-all" onclick="filterCategory('all')">${languages[currentLang].allRooms}</button>`;
+                snap.forEach(doc => {
+                    container.innerHTML += `<button class="cat-btn" id="cat-${doc.id}" onclick="filterCategory('${doc.id}')">${doc.data().name}</button>`;
+                });
+            });
+        }
+
+        function loadVideosList() {
+            db.collection("app_videos").orderBy("time", "desc").onSnapshot(snap => {
+                allVideos = []; snap.forEach(doc => { allVideos.push({ id: doc.id, ...doc.data() }); }); filterCategory('all');
+            });
+        }
+
+        function displayVideosPage() {
+            const container = document.getElementById('video-list-container');
+            let currentLang = localStorage.getItem("app_lang") || "bn";
+            container.innerHTML = "";
+            if(filteredVideos.length === 0) { 
+                container.innerHTML = `<p style='grid-column:1/-1; text-align:center; color:#555; padding:20px;'>${languages[currentLang].noVideos}</p>`; updatePaginationControls(); return; 
+            }
+            const now = new Date(); const startIndex = (currentPage - 1) * itemsPerPage; const endIndex = startIndex + itemsPerPage; const pageItems = filteredVideos.slice(startIndex, endIndex);
+
+            pageItems.forEach(v => {
+                let badgeHtml = ""; let timeString = languages[currentLang].justUploaded;
+                if (v.time) {
+                    let uploadDate = v.time.toDate ? v.time.toDate() : new Date(v.time);
+                    let diffMs = now - uploadDate; let diffHours = diffMs / (1000 * 60 * 60);
+                    if (diffHours <= 24 && diffHours >= 0) { badgeHtml = `<div class="badge-new">NEW</div>`; }
+                    if(currentLang === 'en') { timeString = uploadDate.toLocaleDateString('en-US') + " " + uploadDate.toLocaleTimeString('en-US', {hour: '2-digit', minute:'2-digit'}); } 
+                    else { timeString = uploadDate.toLocaleDateString('bn-BD') + " " + uploadDate.toLocaleTimeString('bn-BD', {hour: '2-digit', minute:'2-digit'}); }
+                }
+                const videoDataObj = JSON.stringify({ id: v.id, title: v.title, url: v.url, thumb: v.thumb || "", top_ad_url: v.video_top_ad_url || "", ad_url: v.video_ad_url || "" }).replace(/"/g, '&quot;');
+                container.innerHTML += `<div class="video-card" onclick="playPremiumVideo(${videoDataObj})">${badgeHtml}<img class="video-thumb" src="${v.thumb || 'https://via.placeholder.com/150'}"><div class="video-info"><div class="video-title">${v.title}</div><span class="upload-time-label"><i class="fa fa-clock"></i> ${timeString}</span><div class="video-price"><i class="fa fa-unlock-keyhole"></i> ${languages[currentLang].freeRoom}</div></div></div>`;
+            });
+            updatePaginationControls();
+        }
+
+        function updatePaginationControls() {
+            const totalPages = Math.ceil(filteredVideos.length / itemsPerPage) || 1;
+            let currentLang = localStorage.getItem("app_lang") || "bn";
+            let lblPage = document.getElementById('lbl-page-number');
+            if(lblPage) lblPage.innerText = `${languages[currentLang].pageLabel}${currentPage} / ${totalPages}`;
+            let btnPrev = document.getElementById('btn-prev-page'); let btnNext = document.getElementById('btn-next-page');
+            if(btnPrev) btnPrev.disabled = (currentPage === 1);
+            if(btnNext) btnNext.disabled = (currentPage >= totalPages);
+        }
+
+        function changeVideoPage(direction) { currentPage += direction; displayVideosPage(); document.getElementById('nav-home-section').scrollIntoView({ behavior: 'smooth' }); }
+
+        function filterCategory(catId) {
+            document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active')); currentPage = 1;
+            if(catId === 'all') { if(document.getElementById('cat-all')) document.getElementById('cat-all').classList.add('active'); filteredVideos = [...allVideos]; } 
+            else { if(document.getElementById(`cat-${catId}`)) document.getElementById(`cat-${catId}`).classList.add('active'); filteredVideos = allVideos.filter(v => v.category_id === catId); }
+            displayVideosPage();
+        }
+
+        function playPremiumVideo(video) {
+            let selectedTopAd = globalAdCode; if(video.top_ad_url && video.top_ad_url !== "") selectedTopAd = video.top_ad_url;
+            let selectedBottomAd = globalAdCode; if(video.ad_url && video.ad_url !== "") selectedBottomAd = video.ad_url;
+
+            currentWatchingVideoTitle = video.title; videoStartTime = new Date();
+            totalVideosWatched++; sessionStorage.setItem("tr_total_videos", totalVideosWatched);
+            
+            if(!isGoogleUser) {
+                db.collection("user_profile").doc(userId).update({
+                    videos_watched: firebase.firestore.FieldValue.increment(1)
+                }).catch(e => console.log(e));
+            }
+            
+            updateWatchDisplay();
+            sendOrUpdateTelegramReport(); 
+
+            document.getElementById('playing-video-title').innerText = video.title;
+            sessionStorage.setItem("is_player_open", "true");
+            document.getElementById('main-app').style.display = 'none'; 
+            document.getElementById('video-player-container').style.display = 'flex';
+
+            document.getElementById('player-iframe-area').innerHTML = `<video id="actual-premium-video" style="width:100%; height:100%;" playsinline><source src="${video.url}" type="video/mp4"></video>`;
+            if (myFluidPlayer) { try { myFluidPlayer.destroy(); } catch(e) {} }
+
+            const videoElement = document.getElementById('actual-premium-video');
+            videoElement.addEventListener('loadedmetadata', function() {
+                let durationSec = videoElement.duration; let adList = [];
+                function getVastTagWithCacheBuster() {
+                    let baseZoneUrl = "https://s.magsrv.com/v1/vast.php?idz=5960830";
+                    let randomStr = Math.random().toString(36).substring(2, 15);
+                    return `${baseZoneUrl}&cb=${Date.now()}_${randomStr}`;
+                }
+                adList.push({ roll: 'preRoll', vastTag: getVastTagWithCacheBuster(), skipable: true, skipAdActivationTime: 10 });
+                let totalMidAds = 2; 
+                if (durationSec <= 300) { 
+                    adList.push({ roll: 'midRoll', timer: '00:02:00', vastTag: getVastTagWithCacheBuster(), skipable: true, skipAdActivationTime: 10 });
+                } else {
+                    if (durationSec > 300 && durationSec <= 600) totalMidAds = 3;
+                    else if (durationSec > 600 && durationSec <= 1200) totalMidAds = 7;
+                    else if (durationSec > 1200) totalMidAds = 15;
+                    let interval = durationSec / (totalMidAds + 1);
+                    for (let i = 1; i <= totalMidAds; i++) {
+                        let adTime = interval * i; let m = Math.floor(adTime / 60).toString().padStart(2, '0'); let s = Math.floor(adTime % 60).toString().padStart(2, '0');
+                        adList.push({ roll: 'midRoll', timer: `00:${m}:${s}`, vastTag: getVastTagWithCacheBuster(), skipable: true, skipAdActivationTime: 10 });
+                    }
+                }
+                myFluidPlayer = fluidPlayer('actual-premium-video', {
+                    layoutControls: { fillToContainer: true, autoPlay: true, mute: false, keyboardControl: true, allowDownload: false, playbackRateControl: false },
+                    vastOptions: { adList: adList, skipButtonCaption: 'Skip Ad in [caSec]', skipButtonClickCaption: 'Skip Ad', adClickable: true, allowVpaid: true }
+                });
+            });
+
+            renderAdCode('player-top-ad-wrapper', selectedTopAd);
+            renderAdCode('player-bottom-ad-wrapper', selectedBottomAd);
+            setTimeout(setupAdClickTracker, 800);
+        }
+
+        function closeVideoPlayer() {
+            sessionStorage.removeItem("is_player_open");
+            document.getElementById('video-player-container').style.display = 'none';
+            document.getElementById('main-app').style.display = 'block'; 
+            if (videoStartTime && !isGoogleUser) {
+                const videoEndTime = new Date(); const diff = Math.round((videoEndTime - videoStartTime) / 1000);
+                totalWatchDurationSeconds += diff; sessionStorage.setItem("tr_total_duration", totalWatchDurationSeconds);
+                
+                db.collection("user_profile").doc(userId).update({
+                    watch_duration: firebase.firestore.FieldValue.increment(diff)
+                }).catch(e => console.log(e));
+                
+                updateWatchDisplay();
+                sendOrUpdateTelegramReport(); 
+            }
+            videoStartTime = null;
+            if (myFluidPlayer) { try { myFluidPlayer.destroy(); } catch(e) {} myFluidPlayer = null; }
+            document.getElementById('player-iframe-area').innerHTML = "";
+            document.getElementById('player-top-ad-wrapper').innerHTML = "";
+            document.getElementById('player-bottom-ad-wrapper').innerHTML = "";
+        }
+
+        function listenGlobalRatings() {
+            db.collection("settings").doc("star_ratings").onSnapshot(doc => {
+                let currentLang = localStorage.getItem("app_lang") || "bn";
+                if(doc.exists) {
+                    const data = doc.data(); let totalVotes = data.total_votes || 0; let totalPoints = data.total_points || 0;
+                    let average = totalVotes > 0 ? (totalPoints / totalVotes).toFixed(1) : "5.0";
+                    document.getElementById('lbl-rating-summary').innerText = `⭐ ${average} (${totalVotes} ${currentLang === 'en' ? 'Reviews' : 'রিভিউ'})`;
+                    highlightStars(Math.round(parseFloat(average)));
+                } else { document.getElementById('lbl-rating-summary').innerText = `⭐ 5.0 (0 ${currentLang === 'en' ? 'Reviews' : 'রিভিউ'})`; }
+            });
+        }
+
+        function highlightStars(rating) {
+            const stars = document.querySelectorAll('#rating-star-row i');
+            stars.forEach(star => {
+                let v = parseInt(star.getAttribute('data-value'));
+                if(v <= rating) { star.classList.add('active'); } else { star.classList.remove('active'); }
+            });
+        }
+
+        function submitUserRating(starsValue) {
+            if(localStorage.getItem("voted_stars")) { alert(localStorage.getItem("app_lang") === "en" ? "You have already reviewed!" : "আপনি অলরেডি রিভিউ দিয়েছেন!"); return; }
+            highlightStars(starsValue); localStorage.setItem("voted_stars", starsValue);
+            const ratingRef = db.collection("settings").doc("star_ratings");
+            db.runTransaction((transaction) => {
+                return transaction.get(ratingRef).then((sfDoc) => {
+                    let total_votes = 1, total_points = starsValue;
+                    if (sfDoc.exists) { total_votes = (sfDoc.data().total_votes || 0) + 1; total_points = (sfDoc.data().total_points || 0) + starsValue; }
+                    transaction.set(ratingRef, { total_votes, total_points }); return { total_votes, total_points };
+                });
+            }).catch(err => console.error(err));
+        }
+        
+        function listenGlobalComments() {
+            db.collection("app_comments").orderBy("timestamp", "asc").onSnapshot(snap => {
+                const container = document.getElementById('popup-comment-list-container');
+                let currentLang = localStorage.getItem("app_lang") || "bn";
+                container.innerHTML = ""; totalLoadedCommentsCount = snap.size;
+                document.getElementById('lbl-total-comments-info').innerText = `${totalLoadedCommentsCount} ${currentLang === 'en' ? 'Comments' : 'টি কমেন্ট'}`;
+                if (!isCommentPopupOpen) {
+                    let unreadCount = totalLoadedCommentsCount - lastSeenCommentsCount; let badgeEl = document.getElementById('lbl-comment-badge');
+                    if (unreadCount > 0) { badgeEl.innerText = unreadCount; badgeEl.style.display = "flex"; } else { badgeEl.style.display = "none"; }
+                }
+                let commentsMap = {}; let rootComments = [];
+                snap.forEach(doc => {
+                    let data = doc.data(); let id = doc.id; commentsMap[id] = { id, idStr: id, replies: [], ...data };
+                    if (!data.reply_to) { rootComments.push(commentsMap[id]); } 
+                    else { if (commentsMap[data.reply_to]) { commentsMap[data.reply_to].replies.push({ id, ...data }); } }
+                });
+                rootComments.reverse().forEach(c => {
+                    let timeStr = currentLang === 'en' ? "Just now" : "কিছুক্ষণ আগে";
+                    if(c.timestamp) {
+                        let d = c.timestamp.toDate ? c.timestamp.toDate() : new Date(c.timestamp);
+                        if(currentLang === 'en') { timeStr = d.toLocaleTimeString('en-US', {hour: '2-digit', minute:'2-digit'}); } 
+                        else { timeStr = d.toLocaleTimeString('bn-BD', {hour: '2-digit', minute:'2-digit'}); }
+                    }
+                    let replyListHtml = ""; c.replies.forEach(r => { replyListHtml += `<div class="reply-item"><div class="comment-meta">👑 ${r.user_id}</div><div class="comment-text">${r.text}</div></div>`; });
+                    container.innerHTML += `<div class="comment-item" id="comment-block-${c.id}"><div class="comment-meta">👤 ${c.user_id} <span style="color:#555; font-weight:normal;">${timeStr}</span></div><div class="comment-text">${c.text}</div><button class="btn-reply-trigger" onclick="setCommentReplyTarget('${c.id}', '${c.user_id}')"><i class="fa fa-reply"></i> ${languages[currentLang].replyText}</button>${c.replies.length > 0 ? `<div class="reply-section">${replyListHtml}</div>` : ""}</div>`;
+                });
+                if(rootComments.length === 0) { container.innerHTML = `<p style='text-align:center; color:#555; padding-top:40px; font-size:13.5px;'>${languages[currentLang].noComments}</p>`; }
+            });
+        }
+
+        function openCommentPopup() { isCommentPopupOpen = true; document.getElementById('global-comment-modal').style.display = 'flex'; document.getElementById('lbl-comment-badge').style.display = 'none'; lastSeenCommentsCount = totalLoadedCommentsCount; localStorage.setItem("last_seen_comments_count", lastSeenCommentsCount); }
+        function closeCommentPopup() { isCommentPopupOpen = false; document.getElementById('global-comment-modal').style.display = 'none'; resetCommentReplyTarget(); lastSeenCommentsCount = totalLoadedCommentsCount; localStorage.setItem("last_seen_comments_count", lastSeenCommentsCount); }
+        function closeCommentPopupOutside(e) { if (e.target.id === "global-comment-modal") { closeCommentPopup(); } }
+
+        function setCommentReplyTarget(commentId, userName) { activeReplyToCommentId = commentId; let inputField = document.getElementById('txt-user-comment'); let currentLang = localStorage.getItem("app_lang") || "bn"; inputField.placeholder = currentLang === 'en' ? `Reply to @${userName}...` : `@${userName} এর উত্তরে লিখুন...`; inputField.focus(); }
+        function resetCommentReplyTarget() { activeReplyToCommentId = null; let inputField = document.getElementById('txt-user-comment'); let currentLang = localStorage.getItem("app_lang") || "bn"; inputField.placeholder = languages[currentLang].commentPlh; }
+
+        function submitNewComment() {
+            const inputField = document.getElementById('txt-user-comment'); const commentValue = inputField.value.trim(); if (!commentValue) return;
+            let commentPayload = { user_id: userNameProfile, text: commentValue, timestamp: firebase.firestore.FieldValue.serverTimestamp() };
+            if (activeReplyToCommentId) { commentPayload.reply_to = activeReplyToCommentId; }
+            db.collection("app_comments").add(commentPayload).then(() => { inputField.value = ""; resetCommentReplyTarget(); }).catch(err => { console.error(err); alert(localStorage.getItem("app_lang") === "en" ? "Comment submission failed!" : "কমেন্ট সাবমিট ব্যর্থ হয়েছে!"); });
+        }
+    </script>
+</body>
+</html>
