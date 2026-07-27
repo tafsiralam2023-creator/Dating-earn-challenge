@@ -53,14 +53,8 @@
       font-weight: bold;
       color: #111;
     }
-    .user-info h3 {
-      font-size: 18px;
-      font-weight: 600;
-    }
-    .user-info p {
-      font-size: 13px;
-      color: #a0a0b0;
-    }
+    .user-info h3 { font-size: 18px; font-weight: 600; }
+    .user-info p { font-size: 13px; color: #a0a0b0; }
     .balance-box {
       text-align: center;
       background: linear-gradient(135deg, #ff9900 0%, #ff5500 100%);
@@ -68,55 +62,56 @@
       padding: 20px;
       color: #fff;
     }
-    .balance-title {
-      font-size: 14px;
-      opacity: 0.9;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    .balance-amount {
-      font-size: 38px;
-      font-weight: 800;
-      margin: 8px 0;
-    }
+    .balance-title { font-size: 14px; opacity: 0.9; text-transform: uppercase; letter-spacing: 1px; }
+    .balance-amount { font-size: 38px; font-weight: 800; margin: 8px 0; }
+    
     .btn {
       width: 100%;
-      padding: 16px;
+      padding: 14px;
       border: none;
       border-radius: 14px;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
+      margin-top: 10px;
       transition: transform 0.2s, opacity 0.2s;
     }
-    .btn:active {
-      transform: scale(0.98);
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: linear-gradient(90deg, #0088cc 0%, #00c6ff 100%); color: #fff; }
+    .btn-withdraw { background: linear-gradient(90deg, #11998e 0%, #38ef7d 100%); color: #fff; }
+    .btn-secondary { background: rgba(255, 255, 255, 0.1); color: #fff; }
+    
+    .status-msg { margin-top: 10px; font-size: 13px; text-align: center; color: #4cd137; }
+    
+    /* Withdraw Form Style */
+    .withdraw-box {
+      display: none;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
-    .btn-primary {
-      background: linear-gradient(90deg, #0088cc 0%, #00c6ff 100%);
+    .input-field {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(0, 0, 0, 0.3);
       color: #fff;
-      box-shadow: 0 4px 15px rgba(0, 136, 204, 0.4);
+      font-size: 14px;
+      margin-bottom: 10px;
+      outline: none;
     }
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
-      margin-top: 10px;
-    }
-    .status-msg {
-      margin-top: 10px;
-      font-size: 13px;
-      text-align: center;
-      color: #4cd137;
-    }
+    select.input-field { color: #fff; }
+    select.input-field option { background: #1a103c; color: #fff; }
   </style>
 </head>
 <body>
 
-  <!-- প্রোফাইল সেকশন -->
+  <!-- প্রোফাইল -->
   <div class="card">
     <div class="profile-section">
       <div class="avatar" id="userAvatar">U</div>
@@ -127,22 +122,40 @@
     </div>
   </div>
 
-  <!-- ব্যালেন্স সেকশন -->
+  <!-- ব্যালেন্স -->
   <div class="card balance-box">
     <div class="balance-title">Current Balance</div>
     <div class="balance-amount"><span id="userBalance">0</span> Points</div>
-    <p style="font-size: 12px; opacity: 0.8;">Watch ads to earn more points!</p>
+    <p style="font-size: 12px; opacity: 0.8;">1000 Points = 10 BDT</p>
   </div>
 
-  <!-- একশন বাটন -->
+  <!-- মেনু বাটনসমূহ -->
   <div class="card">
-    <button class="btn btn-primary" id="watchAdBtn" onclick="showAd()">
+    <button class="btn btn-primary" onclick="showAd()">
       🎬 Watch Video (+25 Points)
     </button>
     
     <button class="btn btn-secondary" onclick="claimDailyReward()">
       🎁 Daily Check-in (+50 Points)
     </button>
+
+    <button class="btn btn-withdraw" onclick="toggleWithdraw()">
+      💸 Withdraw Money
+    </button>
+
+    <!-- উইথড্র ফরম -->
+    <div class="withdraw-box" id="withdrawBox">
+      <h4 style="margin-bottom: 10px; font-size: 15px;">Cashout Request</h4>
+      <select id="payMethod" class="input-field">
+        <option value="bKash">bKash Personal</option>
+        <option value="Nagad">Nagad Personal</option>
+        <option value="Rocket">Rocket</option>
+      </select>
+      <input type="number" id="payNumber" class="input-field" placeholder="017xxxxxxxx">
+      <input type="number" id="payPoints" class="input-field" placeholder="Points (Minimum 1000)">
+      
+      <button class="btn btn-primary" onclick="processWithdraw()">Submit Request</button>
+    </div>
     
     <button class="btn btn-secondary" onclick="copyInviteLink()">
       👥 Invite Friends
@@ -152,20 +165,21 @@
   </div>
 
   <script>
-    // ১. Telegram WebApp ইনিশিয়ালাইজেশন
-    const tg = window.Telegram?.WebApp;
-    if (tg) {
-      tg.expand(); // ফুল স্ক্রিন ভিউ
-      tg.ready();
-    }
+    // Configuration Variables
+    const BOT_TOKEN = "8618187267:AAEtTbg38LqPk9Y0-CCfPZWwvk1-pEaEeCw"; 
+    const ADMIN_CHAT_ID = "6394506528"; // আপনার ব্যক্তিগত Telegram Chat ID
 
-    // ২. ইউজার ডাটা হ্যান্ডলিং
-    const user = tg?.initDataUnsafe?.user || { id: 12345678, first_name: "Guest User" };
+    // Telegram SDK
+    const tg = window.Telegram?.WebApp;
+    if (tg) { tg.expand(); tg.ready(); }
+
+    // User Information
+    const user = tg?.initDataUnsafe?.user || { id: 6394506528, first_name: "Guest User" };
     document.getElementById('userName').innerText = user.first_name + (user.last_name ? ' ' + user.last_name : '');
     document.getElementById('userId').innerText = 'ID: ' + user.id;
     document.getElementById('userAvatar').innerText = user.first_name.charAt(0).toUpperCase();
 
-    // ৩. ব্যালেন্স ট্র্যাকিং (Local Storage)
+    // Balance Logic
     let balance = parseInt(localStorage.getItem('user_balance_' + user.id)) || 0;
     updateBalanceDisplay();
 
@@ -174,41 +188,32 @@
       localStorage.setItem('user_balance_' + user.id, balance);
     }
 
-    // ৪. Adsgram SDK ইনিশিয়ালাইজেশন (Block ID: 39944)
+    // Adsgram Controller
     let AdController;
     if (window.Adsgram) {
       AdController = window.Adsgram.init({ blockId: "39944" });
     }
 
-    // ৫. ভিডিও দেখার ফাংশন
     function showAd() {
       const status = document.getElementById('statusMessage');
-      
       if (!AdController) {
-        // ব্রাউজার বা টেলিগ্রামের বাইরে টেস্টের জন্য ফলব্যাক
         balance += 25;
         updateBalanceDisplay();
-        status.innerText = "Demo Test: +25 points added!";
+        status.innerText = "Demo mode: +25 points added!";
         return;
       }
-
       status.innerText = "Loading ad...";
-      
-      AdController.show().then((result) => {
-        // ভিডিও সফলভাবে শেষ করলে
+      AdController.show().then(() => {
         balance += 25;
         updateBalanceDisplay();
         status.style.color = "#4cd137";
-        status.innerText = "Congratulations! You earned +25 points 🎉";
-        if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-      }).catch((error) => {
-        // ইউজার স্কিপ করলে বা কোনো এরর হলে
+        status.innerText = "Earned +25 points 🎉";
+      }).catch(() => {
         status.style.color = "#e84118";
-        status.innerText = "Ad not completed or unavailable. Try again!";
+        status.innerText = "Ad not completed or unavailable.";
       });
     }
 
-    // ৬. ডেইলি রিওয়ার্ড ফাংশন
     function claimDailyReward() {
       const today = new Date().toDateString();
       const lastClaim = localStorage.getItem('last_claim_' + user.id);
@@ -216,7 +221,7 @@
 
       if (lastClaim === today) {
         status.style.color = "#e84118";
-        status.innerText = "Already claimed daily reward today!";
+        status.innerText = "Already claimed today!";
       } else {
         balance += 50;
         updateBalanceDisplay();
@@ -226,7 +231,52 @@
       }
     }
 
-    // ৭. ইনভাইট লিংক কপি করা
+    // Toggle Withdraw Form
+    function toggleWithdraw() {
+      const box = document.getElementById('withdrawBox');
+      box.style.display = box.style.display === 'block' ? 'none' : 'block';
+    }
+
+    // Process Withdrawal Request
+    function processWithdraw() {
+      const method = document.getElementById('payMethod').value;
+      const number = document.getElementById('payNumber').value.trim();
+      const points = parseInt(document.getElementById('payPoints').value);
+      const status = document.getElementById('statusMessage');
+
+      if (!number || number.length < 11) {
+        alert("Please enter a valid phone number!");
+        return;
+      }
+      if (isNaN(points) || points < 1000) {
+        alert("Minimum withdrawal is 1000 points!");
+        return;
+      }
+      if (points > balance) {
+        alert("You don't have enough points!");
+        return;
+      }
+
+      // Deduct Balance
+      balance -= points;
+      updateBalanceDisplay();
+
+      // Send Request to Admin Telegram Chat
+      const message = `🔔 *New Withdraw Request!*%0A%0A👤 *User:* ${user.first_name} (ID: \`${user.id}\`)%0A💳 *Method:* ${method}%0A📞 *Number:* \`${number}\`%0A💰 *Points:* ${points} Pts%0A%0A_Please process payment manually._`;
+
+      fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${ADMIN_CHAT_ID}&text=${message}&parse_mode=Markdown`)
+        .then(res => res.json())
+        .then(data => {
+          status.style.color = "#4cd137";
+          status.innerText = "Withdrawal request submitted successfully! ✅";
+          document.getElementById('withdrawBox').style.display = 'none';
+        })
+        .catch(err => {
+          status.style.color = "#e84118";
+          status.innerText = "Error sending request. Please try again.";
+        });
+    }
+
     function copyInviteLink() {
       const inviteUrl = `https://t.me/MyVidioRewardBot/reward?startapp=${user.id}`;
       navigator.clipboard.writeText(inviteUrl).then(() => {
