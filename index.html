@@ -1,1 +1,240 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Video Reward Mini App</title>
+  <!-- Telegram WebApp SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <!-- Adsgram SDK -->
+  <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      user-select: none;
+    }
+    body {
+      background: linear-gradient(135deg, #0f0c20 0%, #1a103c 50%, #0d1b2a 100%);
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 16px;
+    }
+    .card {
+      width: 100%;
+      max-width: 400px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+    .profile-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #f39c12, #f1c40f);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: bold;
+      color: #111;
+    }
+    .user-info h3 {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .user-info p {
+      font-size: 13px;
+      color: #a0a0b0;
+    }
+    .balance-box {
+      text-align: center;
+      background: linear-gradient(135deg, #ff9900 0%, #ff5500 100%);
+      border-radius: 16px;
+      padding: 20px;
+      color: #fff;
+    }
+    .balance-title {
+      font-size: 14px;
+      opacity: 0.9;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .balance-amount {
+      font-size: 38px;
+      font-weight: 800;
+      margin: 8px 0;
+    }
+    .btn {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+    .btn:active {
+      transform: scale(0.98);
+    }
+    .btn-primary {
+      background: linear-gradient(90deg, #0088cc 0%, #00c6ff 100%);
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(0, 136, 204, 0.4);
+    }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      margin-top: 10px;
+    }
+    .status-msg {
+      margin-top: 10px;
+      font-size: 13px;
+      text-align: center;
+      color: #4cd137;
+    }
+  </style>
+</head>
+<body>
 
+  <!-- প্রোফাইল সেকশন -->
+  <div class="card">
+    <div class="profile-section">
+      <div class="avatar" id="userAvatar">U</div>
+      <div class="user-info">
+        <h3 id="userName">User</h3>
+        <p id="userId">ID: Loading...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ব্যালেন্স সেকশন -->
+  <div class="card balance-box">
+    <div class="balance-title">Current Balance</div>
+    <div class="balance-amount"><span id="userBalance">0</span> Points</div>
+    <p style="font-size: 12px; opacity: 0.8;">Watch ads to earn more points!</p>
+  </div>
+
+  <!-- একশন বাটন -->
+  <div class="card">
+    <button class="btn btn-primary" id="watchAdBtn" onclick="showAd()">
+      🎬 Watch Video (+25 Points)
+    </button>
+    
+    <button class="btn btn-secondary" onclick="claimDailyReward()">
+      🎁 Daily Check-in (+50 Points)
+    </button>
+    
+    <button class="btn btn-secondary" onclick="copyInviteLink()">
+      👥 Invite Friends
+    </button>
+    
+    <div class="status-msg" id="statusMessage"></div>
+  </div>
+
+  <script>
+    // ১. Telegram WebApp ইনিশিয়ালাইজেশন
+    const tg = window.Telegram?.WebApp;
+    if (tg) {
+      tg.expand(); // ফুল স্ক্রিন ভিউ
+      tg.ready();
+    }
+
+    // ২. ইউজার ডাটা হ্যান্ডলিং
+    const user = tg?.initDataUnsafe?.user || { id: 12345678, first_name: "Guest User" };
+    document.getElementById('userName').innerText = user.first_name + (user.last_name ? ' ' + user.last_name : '');
+    document.getElementById('userId').innerText = 'ID: ' + user.id;
+    document.getElementById('userAvatar').innerText = user.first_name.charAt(0).toUpperCase();
+
+    // ৩. ব্যালেন্স ট্র্যাকিং (Local Storage)
+    let balance = parseInt(localStorage.getItem('user_balance_' + user.id)) || 0;
+    updateBalanceDisplay();
+
+    function updateBalanceDisplay() {
+      document.getElementById('userBalance').innerText = balance;
+      localStorage.setItem('user_balance_' + user.id, balance);
+    }
+
+    // ৪. Adsgram SDK ইনিশিয়ালাইজেশন (Block ID: 39944)
+    let AdController;
+    if (window.Adsgram) {
+      AdController = window.Adsgram.init({ blockId: "39944" });
+    }
+
+    // ৫. ভিডিও দেখার ফাংশন
+    function showAd() {
+      const status = document.getElementById('statusMessage');
+      
+      if (!AdController) {
+        // ব্রাউজার বা টেলিগ্রামের বাইরে টেস্টের জন্য ফলব্যাক
+        balance += 25;
+        updateBalanceDisplay();
+        status.innerText = "Demo Test: +25 points added!";
+        return;
+      }
+
+      status.innerText = "Loading ad...";
+      
+      AdController.show().then((result) => {
+        // ভিডিও সফলভাবে শেষ করলে
+        balance += 25;
+        updateBalanceDisplay();
+        status.style.color = "#4cd137";
+        status.innerText = "Congratulations! You earned +25 points 🎉";
+        if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+      }).catch((error) => {
+        // ইউজার স্কিপ করলে বা কোনো এরর হলে
+        status.style.color = "#e84118";
+        status.innerText = "Ad not completed or unavailable. Try again!";
+      });
+    }
+
+    // ৬. ডেইলি রিওয়ার্ড ফাংশন
+    function claimDailyReward() {
+      const today = new Date().toDateString();
+      const lastClaim = localStorage.getItem('last_claim_' + user.id);
+      const status = document.getElementById('statusMessage');
+
+      if (lastClaim === today) {
+        status.style.color = "#e84118";
+        status.innerText = "Already claimed daily reward today!";
+      } else {
+        balance += 50;
+        updateBalanceDisplay();
+        localStorage.setItem('last_claim_' + user.id, today);
+        status.style.color = "#4cd137";
+        status.innerText = "Daily Reward claimed! +50 points 🎁";
+      }
+    }
+
+    // ৭. ইনভাইট লিংক কপি করা
+    function copyInviteLink() {
+      const inviteUrl = `https://t.me/MyVidioRewardBot/reward?startapp=${user.id}`;
+      navigator.clipboard.writeText(inviteUrl).then(() => {
+        const status = document.getElementById('statusMessage');
+        status.style.color = "#00c6ff";
+        status.innerText = "Invite link copied to clipboard!";
+      });
+    }
+  </script>
+</body>
+</html>
